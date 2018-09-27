@@ -306,17 +306,17 @@ module.exports = function (intentRequest) {
       query_form.user_query == null
     ) {
       var message =
-        ' I am happy to help you :) and would need some details. Can I have your first name, please?';
+        ' I am happy to help :) and would need some details. Can I have your first name, please?';
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
         ) {
           var message =
-            'I am happy to help you :slightly_smiling_face: and would need some details. Can I have your first name, please?';
+            'I am happy to help :slightly_smiling_face: and would need some details. Can I have your first name, please?';
         }
       } else {
         var message =
-          ' I am happy to help you 🙂 and would need some details. Can I have your first name, please?';
+          ' I am happy to help 🙂 and would need some details. Can I have your first name, please?';
       }
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
@@ -479,12 +479,12 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Business Enquiry?',
-              value: 'Business Query',
+              text: 'General Enquiry?',
+              value: 'General Enquiry',
             },
             {
-              text: 'General Enquiry?',
-              value: 'General Query',
+              text: 'Business Enquiry?',
+              value: 'Business Enquiry',
             },
           ],
           imageUrl: null,
@@ -515,7 +515,8 @@ module.exports = function (intentRequest) {
           var msg = 'Thank You. Have a great day!:slightly_smiling_face:';
         }
       } else {
-        var msg = 'Thank You. Have a great day! 🙂';
+        var msg =
+          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,

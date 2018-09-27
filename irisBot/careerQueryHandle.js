@@ -91,8 +91,8 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Apply Now  OR ',
-              value: 'apply',
+              text: 'Apply Now',
+              value: 'Apply Now',
             },
             {
               text: 'Learn More',
@@ -112,19 +112,19 @@ module.exports = function (intentRequest) {
         'Great! Do you wish to join our vibrant team?',
         genericAttachments
       );
-    } else if (intentRequest.currentIntent.slots.career == 'query') {
+    } else if (intentRequest.currentIntent.slots.career == 'Learn More') {
       var message =
-        'I am happy to help you :) and Would need some details. Can I have your first name, please?';
+        'I am happy to help :) and would need some details. Can I have your first name, please?';
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
         ) {
           var message =
-            'I am happy to help you :slightly_smiling_face: and Would need some details. Can I have your first name, please?';
+            'I am happy to help :slightly_smiling_face: and would need some details. Can I have your first name, please?';
         }
       } else {
         var message =
-          'I am happy to help you 🙂 and Would need some details. Can I have your first name, please?';
+          'I am happy to help 🙂 and would need some details. Can I have your first name, please?';
       }
 
       return lexResponses.elicitSlotWithoutCard (
@@ -142,7 +142,7 @@ module.exports = function (intentRequest) {
       );
     }
 
-    if (intentRequest.currentIntent.slots.career == 'apply') {
+    if (intentRequest.currentIntent.slots.career == 'Apply Now') {
       let message =
         'Sure, I can help you process your application right now. Please type in your first name.';
       return lexResponses.elicitSlotWithoutCard (

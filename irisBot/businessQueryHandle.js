@@ -18,12 +18,12 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Discuss project/Idea',
-              value: 'specialization',
+              text: 'Discuss Project/Idea',
+              value: 'Discuss Project/Idea',
             },
             {
-              text: 'Book a consultation ',
-              value: 'consultation',
+              text: 'Book a Consultation ',
+              value: 'Book a consultation ',
             },
           ],
           imageUrl: null,
@@ -41,7 +41,7 @@ module.exports = function (intentRequest) {
       );
     }
 
-    if (intentRequest.currentIntent.slots.bus_query == 'specialization') {
+    if (intentRequest.currentIntent.slots.bus_query == 'Discuss Project/Idea') {
       let message =
         'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name please?';
       return lexResponses.elicitSlotWithoutCard (
@@ -65,9 +65,9 @@ module.exports = function (intentRequest) {
       );
     }
 
-    if (intentRequest.currentIntent.slots.bus_query == 'consultation') {
+    if (intentRequest.currentIntent.slots.bus_query == 'Book a consultation ') {
       let message =
-        'Wow! I am excited. Our experts are here to help. \nMay i know your first name';
+        'Wow! I am excited. Our experts are here to help. \nMay i know your first name?';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ConsultIntent',

@@ -1,24 +1,24 @@
 'use strict';
 
-const lexResponses = require('../lexResponses');
-const request = require('request');
+const lexResponses = require ('../lexResponses');
+const request = require ('request');
 
-const config = require('../lib/send_email.js');
-const common = require('../lib/send_email');
+const config = require ('../lib/send_email.js');
+const common = require ('../lib/send_email');
 module.exports = function (intentRequest) {
-  console.log(
+  console.log (
     'intentRequest applyNowHandle  called ..' +
-    '' +
-    JSON.stringify(intentRequest)
+      '' +
+      JSON.stringify (intentRequest)
   );
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
-  console.log(query_form.user_name, 'form value', query_form);
-  if (intentRequest.inputTranscript.indexOf('<mailto:') !== -1) {
-    var mail = intentRequest.inputTranscript.split('|');
-    mail = mail[1].split('>');
+  console.log (query_form.user_name, 'form value', query_form);
+  if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
+    var mail = intentRequest.inputTranscript.split ('|');
+    mail = mail[1].split ('>');
     query_form.user_email = mail[0];
-    console.log(mail, 'split perform', query_form);
+    console.log (mail, 'split perform', query_form);
   }
   if (source === 'DialogCodeHook') {
     if (
@@ -31,7 +31,7 @@ module.exports = function (intentRequest) {
     ) {
       let message =
         'Sure, I can help you process your application right now. Please type in your first name.';
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -54,7 +54,7 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -77,7 +77,7 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -105,10 +105,10 @@ module.exports = function (intentRequest) {
           intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
           'Facebook'
         ) {
-          console.log(intentRequest.inputTranscript, 'blahblah');
+          console.log (intentRequest.inputTranscript, 'blahblah');
 
-          console.log(query_form.user_qualification);
-          return lexResponses.elicitSlotWithoutCard(
+          console.log (query_form.user_qualification);
+          return lexResponses.elicitSlotWithoutCard (
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -156,7 +156,7 @@ module.exports = function (intentRequest) {
               title: 'Educational Qualification',
             },
           ];
-          return lexResponses.elicitSlot(
+          return lexResponses.elicitSlot (
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -206,7 +206,7 @@ module.exports = function (intentRequest) {
             title: 'Educational Qualification',
           },
         ];
-        return lexResponses.elicitSlot(
+        return lexResponses.elicitSlot (
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -252,11 +252,11 @@ module.exports = function (intentRequest) {
             },
             {
               text: 'Upto 1 year',
-              value: '1',
+              value: 'Upto 1 year',
             },
             {
               text: 'Upto 2+ years',
-              value: '2',
+              value: 'Upto 2+ years',
             },
             // {
             //   text: 'Upto 3+ years',
@@ -265,10 +265,10 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Please choose',
+          title: 'Please choose one',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -297,7 +297,7 @@ module.exports = function (intentRequest) {
           intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
           'Facebook'
         ) {
-          return lexResponses.elicitSlotWithoutCard(
+          return lexResponses.elicitSlotWithoutCard (
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -340,10 +340,10 @@ module.exports = function (intentRequest) {
               ],
               imageUrl: null,
               subTitle: '...',
-              title: 'Please choose 1',
+              title: 'Please choose one',
             },
           ];
-          return lexResponses.elicitSlot(
+          return lexResponses.elicitSlot (
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -388,10 +388,10 @@ module.exports = function (intentRequest) {
             ],
             imageUrl: null,
             subTitle: '...',
-            title: 'Please choose 1',
+            title: 'Please choose one',
           },
         ];
-        return lexResponses.elicitSlot(
+        return lexResponses.elicitSlot (
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -434,8 +434,8 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
-      sendSlackMsg(query_form, platform, myResult => {
-        console.log('Slack message sent : ' + myResult);
+      sendSlackMsg (query_form, platform, myResult => {
+        console.log ('Slack message sent : ' + myResult);
       });
 
       let genericAttachments = [
@@ -471,7 +471,7 @@ module.exports = function (intentRequest) {
           'Thank You so much 🙂 . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
       }
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -501,12 +501,12 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Business Enquiry?',
-              value: 'Business Query',
+              text: 'General Enquiry?',
+              value: 'General Enquiry',
             },
             {
-              text: 'General Enquiry?',
-              value: 'General Query',
+              text: 'Business Enquiry?',
+              value: 'Business Enquiry',
             },
           ],
           imageUrl: null,
@@ -514,10 +514,10 @@ module.exports = function (intentRequest) {
           title: 'Do you have a',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'Greeting',
-        { query: null },
+        {query: null},
         'query',
         'Okay, How can i help you?',
         genericAttachments
@@ -539,9 +539,10 @@ module.exports = function (intentRequest) {
           var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
         }
       } else {
-        var msg = 'Thank You. Have a great day! 🙂';
+        var msg =
+          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
       }
-      return lexResponses.close(
+      return lexResponses.close (
         intentRequest.sessionAttributes,
         'Fulfilled',
         msg
@@ -553,8 +554,8 @@ module.exports = function (intentRequest) {
   }
 };
 
-var https = require('https');
-function sendSlackMsg(query_form, source, callback) {
+var https = require ('https');
+function sendSlackMsg (query_form, source, callback) {
   var post_data = {
     text: 'Hi *' +
       query_form.user_name +
@@ -578,38 +579,38 @@ function sendSlackMsg(query_form, source, callback) {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(JSON.stringify(post_data)),
+      'Content-Length': Buffer.byteLength (JSON.stringify (post_data)),
     },
   };
 
-  var status = common.sendEmail(
+  var status = common.sendEmail (
     '<p> Hi <b>' +
-    query_form.user_name +
-    '</b> has applied for the job. His/Her details are given below :</p> ' +
-    " Applicant's e-mail Id: " +
-    query_form.user_email +
-    "<br> Applicant's contact number: " +
-    query_form.user_phone +
-    '<br> Qualification: ' +
-    query_form.user_qualification +
-    '<br>Job Experience (in years): ' +
-    query_form.user_experience +
-    '<br> Job Profile: ' +
-    query_form.user_vacancy,
+      query_form.user_name +
+      '</b> has applied for the job. His/Her details are given below :</p> ' +
+      " Applicant's e-mail Id: " +
+      query_form.user_email +
+      "<br> Applicant's contact number: " +
+      query_form.user_phone +
+      '<br> Qualification: ' +
+      query_form.user_qualification +
+      '<br>Job Experience (in years): ' +
+      query_form.user_experience +
+      '<br> Job Profile: ' +
+      query_form.user_vacancy,
     'Iris Job Application from ' + source
   );
-  console.log(status, 'status');
+  console.log (status, 'status');
 
-  var post_req = https.request(post_options, res => {
-    res.setEncoding('utf8');
+  var post_req = https.request (post_options, res => {
+    res.setEncoding ('utf8');
     var returnData = '';
-    res.on('data', chunk => {
+    res.on ('data', chunk => {
       returnData += chunk;
     });
-    res.on('end', () => {
-      callback('Success');
+    res.on ('end', () => {
+      callback ('Success');
     });
   });
-  post_req.write(JSON.stringify(post_data));
-  post_req.end();
+  post_req.write (JSON.stringify (post_data));
+  post_req.end ();
 }

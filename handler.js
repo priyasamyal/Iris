@@ -58,7 +58,7 @@ module.exports.intents = (event, context, callback) => {
     callback (err);
   }
   // } else {
-  console.log ('bbbbbbb');
+
   // try {
   //   console.log (`event.bot.name=${event.bot.name}`, JSON.stringify (event));
 

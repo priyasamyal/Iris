@@ -292,22 +292,34 @@ module.exports = function (intentRequest) {
       );
     } else if (intentRequest.currentIntent.slots.query == null) {
       console.log ('first time hit . So slot chosen');
+      var message =
+        'Hello, My name is Iris and I work for Prologic Technologies.';
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+      if (platform == 'Web') {
+        var message = 'Hi';
+      }
+
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
           buttons: [
             {
               text: 'General Enquiry?',
-              value: 'General Query',
+              value: 'General Enquiry',
             },
             {
               text: 'Business Enquiry?',
-              value: 'Business Query',
+              value: 'Business Enquiry',
             },
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Do you have a',
+          title: 'Do you need help with',
         },
       ];
       return lexResponses.elicitSlot (
@@ -315,7 +327,7 @@ module.exports = function (intentRequest) {
         'Greeting',
         intentRequest.currentIntent.slots,
         'query',
-        'Hello, My name is Iris and I work for Prologic Technologies.',
+        message,
         genericAttachments
       );
     } else {
@@ -328,11 +340,11 @@ module.exports = function (intentRequest) {
             buttons: [
               {
                 text: 'Discuss Project/Idea',
-                value: 'specialization',
+                value: 'Discuss Project/Idea',
               },
               {
-                text: 'Book a consultation',
-                value: 'consultation',
+                text: 'Book a Consultation',
+                value: 'Book a consultation',
               },
             ],
             imageUrl: null,
@@ -356,17 +368,17 @@ module.exports = function (intentRequest) {
             attachmentLinkUrl: null,
             buttons: [
               {
-                text: 'Have a Career query?',
-                value: 'career query',
+                text: 'Career Query?',
+                value: 'Career Query',
               },
               {
-                text: 'our services?',
-                value: 'Services',
+                text: 'Service Query?',
+                value: 'Service',
               },
             ],
             imageUrl: null,
             subTitle: '...',
-            title: 'Please choose your option.',
+            title: 'Do you have a ',
           },
         ];
         return lexResponses.elicitSlot (

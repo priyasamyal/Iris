@@ -307,7 +307,7 @@ module.exports = function (intentRequest) {
     ) {
       console.log ('callconsult.....');
       let message =
-        'Wow! I am excited. Our experts are here to help. \nMay i know your first name';
+        'Wow! I am excited. Our experts are here to help. \nMay i know your first name?';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ConsultIntent',
@@ -443,7 +443,7 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Please choose.',
+          title: 'Please choose one',
         },
       ];
       return lexResponses.elicitSlot (
@@ -553,7 +553,7 @@ module.exports = function (intentRequest) {
               is_complete: null,
             },
             'user_day',
-            ' Please enter the best day to contact you '
+            'Best day to contact you'
           );
         } else {
           var all_days = [
@@ -599,7 +599,7 @@ module.exports = function (intentRequest) {
               is_complete: null,
             },
             'user_day',
-            'Best day in a week to contact you',
+            'Best day to contact you',
             genericAttachments
           );
         }
@@ -641,7 +641,7 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_day',
-          'Best day in a week to contact you',
+          'Best day to contact you',
           genericAttachments
         );
       }
@@ -655,7 +655,8 @@ module.exports = function (intentRequest) {
     ) {
       let message =
         'May i know a convenient time slot for phone call on ' +
-        query_form.user_day;
+        query_form.user_day +
+        '.';
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
@@ -676,7 +677,7 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Choose a time slot please. (IST, + 5.5 GMT)',
+          title: 'Indian Standard Time,+5.5 GMT',
         },
       ];
       return lexResponses.elicitSlot (
@@ -848,12 +849,12 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Business Enquiry?',
-              value: 'Business Query',
+              text: 'General Enquiry?',
+              value: 'General Enquiry',
             },
             {
-              text: 'General Enquiry?',
-              value: 'General Query',
+              text: 'Business Enquiry?',
+              value: 'Business Enquiry',
             },
           ],
           imageUrl: null,
@@ -884,7 +885,8 @@ module.exports = function (intentRequest) {
           var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
         }
       } else {
-        var msg = 'Thank You. Have a great day! 🙂';
+        var msg =
+          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
