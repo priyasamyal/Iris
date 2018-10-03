@@ -10,6 +10,8 @@ module.exports = function (intentRequest) {
     '' +
     JSON.stringify(intentRequest)
   );
+
+  console.log(config.is_send, "config.is_send");
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
@@ -203,9 +205,12 @@ module.exports = function (intentRequest) {
         message,
         genericAttachments
       );
-    } else if (config.current_step == 'consultIntent') {
+    }
+
+    else if (config.current_step == 'consultIntent') {
       console.log("bloack2 call");
       config.current_step = '';
+      config.is_send = true;
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
         var platform =
@@ -858,7 +863,7 @@ module.exports = function (intentRequest) {
       query_form.user_email != null &&
       query_form.user_phone != null &&
       query_form.user_des != null &&
-      query_form.is_complete == null
+      query_form.is_complete == null && config.is_send == false
     ) {
       if (intentRequest.requestAttributes != null) {
         var platform =
