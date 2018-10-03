@@ -15,7 +15,7 @@ module.exports = function (intentRequest) {
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
-  var is_sent;
+  var is_sent = '';
   //  updated code
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
