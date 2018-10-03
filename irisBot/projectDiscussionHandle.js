@@ -1011,7 +1011,7 @@ module.exports = function (intentRequest) {
       // config.current_step == 'discussIntent'
     ) {
       console.log ('jj');
-
+      config.is_send_discuss = false;
       config.current_step = '';
 
       let genericAttachments = [

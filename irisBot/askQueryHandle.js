@@ -493,7 +493,7 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
-      console.log ('platform web');
+
       var message =
         'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
