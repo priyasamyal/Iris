@@ -47,7 +47,6 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
-
           '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
       }
       var slack_msg =
@@ -416,8 +415,10 @@ module.exports = function (intentRequest) {
       if (!nameVAlidation) {
         console.log('a');
         let message =
+
           'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
         return lexResponses.elicitSlotWithoutCard(
+
           intentRequest.sessionAttributes,
           'ConsultIntent',
           {
