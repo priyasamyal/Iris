@@ -372,26 +372,118 @@ module.exports = function (intentRequest) {
       query_form.user_experience != null &&
       query_form.user_vacancy == null
     ) {
-      if (intentRequest.requestAttributes != null) {
-        if (
-          intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
-          'Facebook'
-        ) {
-          return lexResponses.elicitSlotWithoutCard (
-            intentRequest.sessionAttributes,
-            'ApplyNow',
-            {
-              user_email: query_form.user_email,
-              user_experience: query_form.user_experience,
-              user_name: query_form.user_name,
-              user_phone: query_form.user_phone,
-              user_qualification: query_form.user_qualification,
-              user_vacancy: null,
-              is_complete: null,
-            },
-            'user_vacancy',
-            '*Which vacancy you wish to apply for?* \n Type 1 for Web Developer \n Type 2 for Hybrid Apps Developer \n Type 3 for Web Designer \n Type 4 for QA Tester \n Type 5 for HR'
-          );
+      if (intentRequest.inputTranscript == 'Others') {
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'Fresher',
+                value: 'Fresher',
+              },
+              {
+                text: 'Upto 1 year',
+                value: 'Upto 1 year',
+              },
+              {
+                text: 'Upto 2 years',
+                value: 'Upto 2 years',
+              },
+              // {
+              //   text: 'Upto 3+ years',
+              //   value: '3+',
+              // },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Please choose one',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: query_form.user_email,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            user_qualification: query_form.user_qualification,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_experience',
+          'May I know your work experience? ',
+          genericAttachments
+        );
+      } else {
+        if (intentRequest.requestAttributes != null) {
+          if (
+            intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
+            'Facebook'
+          ) {
+            return lexResponses.elicitSlotWithoutCard (
+              intentRequest.sessionAttributes,
+              'ApplyNow',
+              {
+                user_email: query_form.user_email,
+                user_experience: query_form.user_experience,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                user_qualification: query_form.user_qualification,
+                user_vacancy: null,
+                is_complete: null,
+              },
+              'user_vacancy',
+              '*Which vacancy you wish to apply for?* \n Type 1 for Web Developer \n Type 2 for Hybrid Apps Developer \n Type 3 for Web Designer \n Type 4 for QA Tester \n Type 5 for HR'
+            );
+          } else {
+            let genericAttachments = [
+              {
+                attachmentLinkUrl: null,
+                buttons: [
+                  {
+                    text: 'Web Developer',
+                    value: 'Web Developer',
+                  },
+                  {
+                    text: 'Hybrid Apps Developer',
+                    value: 'Hybrid App Developer',
+                  },
+                  {
+                    text: 'Web Designer',
+                    value: 'Web Designer',
+                  },
+                  {
+                    text: 'QA Tester',
+                    value: 'QA Engineer',
+                  },
+                  {
+                    text: 'HR',
+                    value: 'HR',
+                  },
+                ],
+                imageUrl: null,
+                subTitle: '...',
+                title: 'Please choose one',
+              },
+            ];
+            return lexResponses.elicitSlot (
+              intentRequest.sessionAttributes,
+              'ApplyNow',
+              {
+                user_email: query_form.user_email,
+                user_experience: query_form.user_experience,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                user_qualification: query_form.user_qualification,
+                user_vacancy: null,
+                is_complete: null,
+              },
+              'user_vacancy',
+              'Which vacancy you wish to apply for?',
+              genericAttachments
+            );
+          }
         } else {
           let genericAttachments = [
             {
@@ -440,53 +532,6 @@ module.exports = function (intentRequest) {
             genericAttachments
           );
         }
-      } else {
-        let genericAttachments = [
-          {
-            attachmentLinkUrl: null,
-            buttons: [
-              {
-                text: 'Web Developer',
-                value: 'Web Developer',
-              },
-              {
-                text: 'Hybrid Apps Developer',
-                value: 'Hybrid App Developer',
-              },
-              {
-                text: 'Web Designer',
-                value: 'Web Designer',
-              },
-              {
-                text: 'QA Tester',
-                value: 'QA Engineer',
-              },
-              {
-                text: 'HR',
-                value: 'HR',
-              },
-            ],
-            imageUrl: null,
-            subTitle: '...',
-            title: 'Please choose one',
-          },
-        ];
-        return lexResponses.elicitSlot (
-          intentRequest.sessionAttributes,
-          'ApplyNow',
-          {
-            user_email: query_form.user_email,
-            user_experience: query_form.user_experience,
-            user_name: query_form.user_name,
-            user_phone: query_form.user_phone,
-            user_qualification: query_form.user_qualification,
-            user_vacancy: null,
-            is_complete: null,
-          },
-          'user_vacancy',
-          'Which vacancy you wish to apply for?',
-          genericAttachments
-        );
       }
     } else if (
       query_form.user_name != null &&
