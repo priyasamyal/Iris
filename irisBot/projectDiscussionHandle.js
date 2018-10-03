@@ -200,6 +200,7 @@ module.exports = function (intentRequest) {
       );
     } else if (config.current_step == 'discussIntent') {
       config.current_step = '';
+      config.is_send_discuss = true;
       console.log("welcome");
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -848,6 +849,7 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
+      config.is_send_discuss = true;
       console.log('roru');
       if (intentRequest.requestAttributes != null) {
         var platform =
@@ -857,18 +859,18 @@ module.exports = function (intentRequest) {
       }
       var message =
         'Thank you for sharing your Project/Idea. We will call you between ' +
-        config.user_details.user_time +
+        query_form.user_time +
         ' (IST, + 5.5 GMT) on ' +
-        config.user_details.user_day +
+        query_form.user_day +
         '\n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
         console.log('platform web');
         var message =
           '<div> Thank you for sharing your Project/Idea. We will call you between ' +
-          config.user_details.user_time +
+          query_form.user_time +
           ' (IST, + 5.5 GMT) on ' +
-          config.user_details.user_day +
+          query_form.user_day +
           '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
       }
       var slack_msg =
@@ -1054,6 +1056,7 @@ module.exports = function (intentRequest) {
       query_form.is_complete == 'No'
       // (config.current_step == 'discussIntent' && query_form.is_complete == null)
     ) {
+      config.is_send_discuss = false;
       var msg = 'Thank You. Have a great day! :)';
       if (intentRequest.requestAttributes != null) {
         if (
@@ -1070,7 +1073,7 @@ module.exports = function (intentRequest) {
         'Fulfilled',
         msg
       );
-    } else if (config.is_send_discuss == false) {
+    } else if (config.is_send_discuss == true) {
       console.log("hi");
       console.log('roru');
       if (intentRequest.requestAttributes != null) {
@@ -1081,18 +1084,18 @@ module.exports = function (intentRequest) {
       }
       var message =
         'Thank you for sharing your Project/Idea. We will call you between ' +
-        config.user_details.user_time +
+        query_form.user_time +
         ' (IST, + 5.5 GMT) on ' +
-        config.user_details.user_day +
+        query_form.user_day +
         '\n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
         console.log('platform web');
         var message =
           '<div> Thank you for sharing your Project/Idea. We will call you between ' +
-          config.user_details.user_time +
+          query_form.user_time +
           ' (IST, + 5.5 GMT) on ' +
-          config.user_details.user_day +
+          query_form.user_day +
           '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
       }
       let genericAttachments = [
