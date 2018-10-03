@@ -33,6 +33,23 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
+      var message =
+        'Thank you for sharing your Project/Idea. We will call you between ' +
+        config.user_details.user_time +
+        ' (IST, + 5.5 GMT) on ' +
+        config.user_details.user_day +
+        '\n For more queries you may send a mail to business@prologictechnologies.in';
+
+      if (platform == 'Web') {
+        console.log('platform web');
+        var message =
+          '<div> Thank you for sharing your Project/Idea. We will call you between ' +
+          config.user_details.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          config.user_details.user_day +
+
+          '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
+      }
       var slack_msg =
         'Hi *' +
         config.user_details.user_name +
@@ -118,11 +135,7 @@ module.exports = function (intentRequest) {
           is_complete: null,
         },
         'is_complete',
-        'Thank you for sharing your Project/Idea. We will call you between ' +
-        config.user_details.user_time +
-        ' (IST, + 5.5 GMT) on ' +
-        config.user_details.user_day +
-        '\n For more queries you may send a mail to business@prologictechnologies.in',
+        message,
         genericAttachments
       );
     } else if (config.current_step == 'consultIntent') {
@@ -483,13 +496,17 @@ module.exports = function (intentRequest) {
           'Please describe your query.'
         );
       }
-    } else if (
+    }
+
+
+    else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
       query_form.user_contact != null &&
       query_form.user_query != null &&
       query_form.is_complete == null
     ) {
+      console.log("enter block")
       if (intentRequest.requestAttributes != null) {
         var platform =
           intentRequest.requestAttributes['x-amz-lex:channel-type'];
@@ -680,7 +697,24 @@ module.exports = function (intentRequest) {
         'Fulfilled',
         msg
       );
-    } else if (config.is_send_ask == true) {
+    }
+    else if (config.is_send_ask == true) {
+      console.log("call");
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+
+      var message =
+        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
+
+      if (platform == 'Web') {
+        console.log('platform web');
+        var message =
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+      }
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
