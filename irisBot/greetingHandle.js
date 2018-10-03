@@ -118,7 +118,7 @@ module.exports = function (intentRequest) {
       // consult intent  handling
 
       config.current_step = '';
-
+      config.is_send = true;
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
         var platform =

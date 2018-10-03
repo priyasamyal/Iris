@@ -752,6 +752,83 @@ module.exports = function (intentRequest) {
         msg
       );
     }
+    else if (
+      query_form.user_name != null &&
+      query_form.user_email != null &&
+      query_form.user_phone != null &&
+      query_form.user_qualification != null &&
+      query_form.user_experience != null &&
+      query_form.user_vacancy != null &&
+      query_form.is_complete == null && config.is_send_apply == true
+    ) {
+      config.is_send_apply = true;
+      if (intentRequest.inputTranscript == 1) {
+        query_form.user_vacancy = 'Web Developer';
+      } else if (intentRequest.inputTranscript == 2) {
+        query_form.user_vacancy = 'Hybrid Apps Developer';
+      } else if (intentRequest.inputTranscript == 3) {
+        query_form.user_vacancy = 'Web Designer';
+      } else if (intentRequest.inputTranscript == 4) {
+        query_form.user_vacancy = 'QA Tester';
+      } else if (intentRequest.inputTranscript == 5) {
+        query_form.user_vacancy = 'HR';
+      }
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+      let genericAttachments = [
+        {
+          attachmentLinkUrl: null,
+          buttons: [
+            {
+              text: 'Yes',
+              value: 'Yes',
+            },
+            {
+              text: 'No',
+              value: 'No',
+            },
+          ],
+          imageUrl: null,
+          subTitle: '...',
+          title: 'Anything else I can help you with? ',
+        },
+      ];
+      var msg =
+        'Thank You so much :) . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
+
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var msg =
+            'Thank You so much :slightly_smiling_face: . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
+        }
+      } else {
+        var msg =
+          '<div> Thank You so much 🙂 . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
+      }
+
+      return lexResponses.elicitSlot(
+        intentRequest.sessionAttributes,
+        'ApplyNow',
+        {
+          user_email: query_form.user_email,
+          user_experience: query_form.user_experience,
+          user_name: query_form.user_name,
+          user_phone: query_form.user_phone,
+          user_qualification: query_form.user_qualification,
+          user_vacancy: query_form.user_vacancy,
+          is_complete: null,
+        },
+        'is_complete',
+        msg,
+        genericAttachments
+      );
+    }
   }
 
   if (source === 'FulfillmentCodeHook') {
