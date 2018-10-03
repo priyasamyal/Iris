@@ -1,13 +1,13 @@
 'use strict';
-const common = require('../lib/send_email');
-const lexResponses = require('../lexResponses');
-const config = require('../lib/send_email.js');
+const common = require ('../lib/send_email');
+const lexResponses = require ('../lexResponses');
+const config = require ('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
-  console.log(
+  console.log (
     'intentRequest careerQueryHandle  called ..' +
-    '' +
-    JSON.stringify(intentRequest)
+      '' +
+      JSON.stringify (intentRequest)
   );
   const source = intentRequest.invocationSource;
 
@@ -22,12 +22,13 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
-      var message = "Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/";
+      var message =
+        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
-        console.log("platform web");
-        var message = '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
-
+        console.log ('platform web');
+        var message =
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -41,20 +42,20 @@ module.exports = function (intentRequest) {
         '* or contact number :*' +
         config.user_details.user_contact +
         '*';
-      sendSlackMsg(slack_msg, myResult => {
-        console.log('Slack message sent : ' + myResult);
-        var status = common.sendEmail(
+      sendSlackMsg (slack_msg, myResult => {
+        console.log ('Slack message sent : ' + myResult);
+        var status = common.sendEmail (
           '<h4>Hi <b>' +
-          config.user_details.user_name +
-          '</b> has asked the following query from ' +
-          platform +
-          ':</h4><br>' +
-          config.user_details.user_query +
-          ' .<br>Kindly respond back to his/her email id : <b>' +
-          config.user_details.user_email +
-          ' </b>or contact number :<b>' +
-          config.user_details.user_contact +
-          '</b>',
+            config.user_details.user_name +
+            '</b> has asked the following query from ' +
+            platform +
+            ':</h4><br>' +
+            config.user_details.user_query +
+            ' .<br>Kindly respond back to his/her email id : <b>' +
+            config.user_details.user_email +
+            ' </b>or contact number :<b>' +
+            config.user_details.user_contact +
+            '</b>',
           'Iris User Query from ' + platform
         );
       });
@@ -78,7 +79,7 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'AskQuery',
         {
@@ -111,10 +112,10 @@ module.exports = function (intentRequest) {
           title: 'You may apply now or choose a option to know more.',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'CareerQuery',
-        { career: null },
+        {career: null},
         'career',
         'Great! Do you wish to join our vibrant team?',
         genericAttachments
@@ -134,7 +135,7 @@ module.exports = function (intentRequest) {
           'I am happy to help 🙂 and would need some details. Can I have your first name, please?';
       }
 
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'AskQuery',
         {
@@ -152,7 +153,7 @@ module.exports = function (intentRequest) {
     if (intentRequest.currentIntent.slots.career == 'Apply Now') {
       let message =
         'Sure, I can help you process your application right now. Please enter your name.';
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -171,7 +172,7 @@ module.exports = function (intentRequest) {
   }
 
   if (source === 'FulfillmentCodeHook') {
-    console.log('switch to User query intent');
+    console.log ('switch to User query intent');
     let genericAttachments = [
       {
         attachmentLinkUrl: null,
@@ -190,7 +191,7 @@ module.exports = function (intentRequest) {
         title: 'What kind of queries you have ?',
       },
     ];
-    return lexResponses.elicitSlot(
+    return lexResponses.elicitSlot (
       intentRequest.sessionAttributes,
       'UserQuery',
       intentRequest.currentIntent.slots,
@@ -200,32 +201,32 @@ module.exports = function (intentRequest) {
     );
   }
 };
-var https = require('https');
-function sendSlackMsg(postm, callback) {
+var https = require ('https');
+function sendSlackMsg (postm, callback) {
   var post_data = {
     text: postm,
   };
 
   var post_options = {
     host: 'hooks.slack.com',
-    path: '/services/T5676QE8N/BBYUHJB1A/N1AZzu3MjtyT6RsEUsxg6Y8N',
+    path: '/services/T5676QE8N/BD5VAL5JP/bRgApPuynJxt6yPZoN9p6A9b',
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(JSON.stringify(post_data)),
+      'Content-Length': Buffer.byteLength (JSON.stringify (post_data)),
     },
   };
 
-  var post_req = https.request(post_options, res => {
-    res.setEncoding('utf8');
+  var post_req = https.request (post_options, res => {
+    res.setEncoding ('utf8');
     var returnData = '';
-    res.on('data', chunk => {
+    res.on ('data', chunk => {
       returnData += chunk;
     });
-    res.on('end', () => {
-      callback('Success');
+    res.on ('end', () => {
+      callback ('Success');
     });
   });
-  post_req.write(JSON.stringify(post_data));
-  post_req.end();
+  post_req.write (JSON.stringify (post_data));
+  post_req.end ();
 }

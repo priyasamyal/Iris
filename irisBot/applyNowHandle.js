@@ -776,7 +776,7 @@ function sendSlackMsg (query_form, source, callback) {
   };
   var post_options = {
     host: 'hooks.slack.com',
-    path: '/services/T5676QE8N/BBYUHJB1A/N1AZzu3MjtyT6RsEUsxg6Y8N',
+    path: '/services/T5676QE8N/BD5VAL5JP/bRgApPuynJxt6yPZoN9p6A9b',
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
