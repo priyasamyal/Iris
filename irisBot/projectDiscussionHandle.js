@@ -1070,6 +1070,71 @@ module.exports = function (intentRequest) {
         'Fulfilled',
         msg
       );
+    } else if (config.is_send_discuss == false) {
+      console.log("hi");
+      console.log('roru');
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+      var message =
+        'Thank you for sharing your Project/Idea. We will call you between ' +
+        config.user_details.user_time +
+        ' (IST, + 5.5 GMT) on ' +
+        config.user_details.user_day +
+        '\n For more queries you may send a mail to business@prologictechnologies.in';
+
+      if (platform == 'Web') {
+        console.log('platform web');
+        var message =
+          '<div> Thank you for sharing your Project/Idea. We will call you between ' +
+          config.user_details.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          config.user_details.user_day +
+          '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
+      }
+      let genericAttachments = [
+        {
+          attachmentLinkUrl: null,
+          buttons: [
+            {
+              text: 'Yes',
+              value: 'Yes',
+            },
+            {
+              text: 'No',
+              value: 'No',
+            },
+          ],
+          imageUrl: null,
+          subTitle: '...',
+          title: 'Anything else I can help you with? ',
+        },
+      ];
+      return lexResponses.elicitSlot(
+        intentRequest.sessionAttributes,
+        'DiscussIntent',
+        {
+          user_company: query_form.user_company,
+          user_des: query_form.user_des,
+          user_email: query_form.user_email,
+          user_name: query_form.user_name,
+          user_phone: query_form.user_phone,
+          company_size: query_form.company_size,
+          userr_type: query_form.userr_type,
+          user_day: query_form.user_day,
+          user_time: query_form.user_time,
+          is_complete: null,
+        },
+        'is_complete',
+        message,
+        genericAttachments
+      );
+    }
+    else {
+      console.log("hi1");
     }
   }
 };
