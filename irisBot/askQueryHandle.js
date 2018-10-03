@@ -487,6 +487,21 @@ module.exports = function (intentRequest) {
       query_form.user_query != null &&
       query_form.is_complete == null
     ) {
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+      console.log ('platform web');
+      var message =
+        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
+
+      if (platform == 'Web') {
+        console.log ('platform web');
+        var message =
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+      }
       if (config.is_send_ask == true) {
         let genericAttachments = [
           {
