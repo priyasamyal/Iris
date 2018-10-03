@@ -978,7 +978,79 @@ module.exports = function (intentRequest) {
         message,
         genericAttachments
       );
-    } else if (
+    }
+    // For second time enter
+    else if (config.is_send == true) {
+      console.log("config.is_send.....")
+      if (intentRequest.requestAttributes != null) {
+        var platform =
+          intentRequest.requestAttributes['x-amz-lex:channel-type'];
+      } else {
+        var platform = 'Web';
+      }
+      console.log("bloack3 call");
+
+      var message =
+        'I have booked your free 30 minutes consultation with our expert. We will call between ' +
+        config.user_details.user_time +
+        ' (IST, + 5.5 GMT) on ' +
+        config.user_details.user_day +
+        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
+
+      if (platform == 'Web') {
+        console.log('platform web');
+        var message =
+          '<div> I have booked your free 30 minutes consultation with our expert. We will call between ' +
+          config.user_details.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          config.user_details.user_day +
+          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
+      }
+      let genericAttachments = [
+        {
+          attachmentLinkUrl: null,
+          buttons: [
+            {
+              text: 'Yes',
+              value: 'Yes',
+            },
+            {
+              text: 'No',
+              value: 'No',
+            },
+          ],
+          imageUrl: null,
+          subTitle: '...',
+          title: 'Anything else I can help you with? ',
+        },
+      ];
+
+      return lexResponses.elicitSlot(
+        intentRequest.sessionAttributes,
+        'ConsultIntent',
+        {
+          user_company: query_form.user_company,
+          user_des: query_form.user_des,
+          user_email: query_form.user_email,
+          user_name: query_form.user_name,
+          user_phone: query_form.user_phone,
+          user_size: query_form.user_size,
+          userr_type: query_form.userr_type,
+          user_day: query_form.user_day,
+
+          user_time: query_form.user_time,
+          is_complete: null,
+        },
+        'is_complete',
+        message,
+        genericAttachments
+      );
+    }
+
+
+
+    //other
+    else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
       query_form.user_phone != null &&
