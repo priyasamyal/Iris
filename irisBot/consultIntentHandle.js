@@ -122,6 +122,8 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (config.current_step == 'askqueryIntent') {
+
+      console.log("bloack1 call");
       config.current_step = '';
       config.user_details.user_query = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -202,6 +204,7 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (config.current_step == 'consultIntent') {
+      console.log("bloack2 call");
       config.current_step = '';
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -863,6 +866,7 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
+      console.log("bloack3 call");
 
       var message =
         'I have booked your free 30 minutes consultation with our expert. We will call between ' +
