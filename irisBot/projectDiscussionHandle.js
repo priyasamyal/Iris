@@ -215,7 +215,7 @@ module.exports = function (intentRequest) {
     } else if (config.current_step == 'discussIntent') {
       console.log ('phela');
       config.current_step = '';
-      config.is_sendDiscuss = 'true';
+      config.is_send_discuss = 'true';
 
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -853,7 +853,7 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
-      if (config.is_sendDiscuss == 'true') {
+      if (config.is_send_discuss == 'true') {
         console.log ('alexa');
         let genericAttachments = [
           {
