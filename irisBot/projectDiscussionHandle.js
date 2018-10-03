@@ -973,6 +973,7 @@ module.exports = function (intentRequest) {
         intentRequest.inputTranscript == 'Yes' ||
         intentRequest.inputTranscript == 'No'
       ) {
+        config.is_send_discuss = false;
         console.log('burb');
         config.current_step = '';
 
