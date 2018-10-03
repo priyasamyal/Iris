@@ -63,9 +63,9 @@ module.exports = function (intentRequest) {
         'user_name',
         message
       );
-    }
-
-    if (intentRequest.currentIntent.slots.bus_query == 'Book a consultation ') {
+    } else if (
+      intentRequest.currentIntent.slots.bus_query == 'Book a consultation '
+    ) {
       let message =
         'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
       return lexResponses.elicitSlotWithoutCard (
