@@ -897,7 +897,7 @@ module.exports = function (intentRequest) {
           genericAttachments
         );
       } else {
-        console.log ('roru');
+        console.log (is_sent, 'roru');
         if (intentRequest.requestAttributes != null) {
           var platform =
             intentRequest.requestAttributes['x-amz-lex:channel-type'];
@@ -929,6 +929,7 @@ module.exports = function (intentRequest) {
         sendSlackMsg (slack_msg, myResult => {
           console.log ('Slack message sent : ' + myResult);
           is_sent = 'true';
+          console.log (is_sent, 'message sent');
           var status = common.sendEmail (
             '<span>Hi <b>' +
               query_form.user_name +
