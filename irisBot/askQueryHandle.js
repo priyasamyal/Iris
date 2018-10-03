@@ -627,7 +627,7 @@ module.exports = function (intentRequest) {
       query_form.user_query != null &&
       query_form.is_complete == 'Yes'
     ) {
-      is_send_ask = false
+      config.is_send_ask = false
       config.current_step = '';
       let genericAttachments = [
         {
@@ -662,7 +662,7 @@ module.exports = function (intentRequest) {
       query_form.user_query != null &&
       query_form.is_complete == 'No'
     ) {
-      is_send_ask = false;
+      config.is_send_ask = false;
       var msg = 'Thank You. Have a great day! :)';
       if (intentRequest.requestAttributes != null) {
         if (
@@ -680,7 +680,7 @@ module.exports = function (intentRequest) {
         msg
       );
     }
-    else if (is_send_ask == true) {
+    else if (config.is_send_ask == true) {
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
