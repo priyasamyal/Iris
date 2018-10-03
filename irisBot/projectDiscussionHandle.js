@@ -5,7 +5,7 @@ const request = require('request');
 const config = require('../lib/send_email.js');
 const common = require('../lib/send_email');
 module.exports = function (intentRequest) {
-  console.log(config.current_step, config.is_send_discuss, "config.is_send_discuss ");
+  console.log(config.current_step);
 
   console.log(
     'intentRequest projectDiscussion  called ..' +
@@ -15,8 +15,7 @@ module.exports = function (intentRequest) {
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
-
-  //  updated code
+  //  updated code 
   console.log(query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf('<mailto:') !== -1) {
     mail = intentRequest.inputTranscript.split('|');
@@ -35,24 +34,6 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
-      config.is_send = true;
-      var message =
-        'I have booked your free 30 minutes consultation with our expert. We will call between ' +
-        config.user_details.user_time +
-        ' (IST, + 5.5 GMT) on ' +
-        config.user_details.user_day +
-        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
-
-      if (platform == 'Web') {
-        console.log('platform web');
-        var message =
-          '<div> I have booked your free 30 minutes consultation with our expert. We will call between ' +
-          config.user_details.user_time +
-          ' (IST, + 5.5 GMT) on ' +
-          config.user_details.user_day +
-          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
-      }
-
       var slack_msg =
         'Hi *' +
         config.user_details.user_name +
@@ -137,7 +118,11 @@ module.exports = function (intentRequest) {
           is_complete: null,
         },
         'is_complete',
-        message,
+        'I have booked your free 30 minutes consultation with our expert. We will call between ' +
+        config.user_details.user_time +
+        ' (IST, + 5.5 GMT) on ' +
+        config.user_details.user_day +
+        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/',
         genericAttachments
       );
     } else if (config.current_step == 'askqueryIntent') {
@@ -214,10 +199,8 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (config.current_step == 'discussIntent') {
-      console.log('phela');
       config.current_step = '';
-      config.is_send_discuss = 'true';
-
+      console.log("welcome");
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
         var platform =
@@ -230,7 +213,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
-        '\n For more queries you may send a mail to business@prologictechnologies.in';
+        '\n For more queries you may send a mail to business@prologictechnologies.in'
 
       if (platform == 'Web') {
         console.log('platform web');
@@ -290,7 +273,6 @@ module.exports = function (intentRequest) {
           'Iris Project Discussion Request   ' + platform
         );
       });
-
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
@@ -612,7 +594,7 @@ module.exports = function (intentRequest) {
     ) {
       var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
       var contactno = /^\d+$/;
-
+      console.log(mail, 'mailmustang');
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
@@ -864,10 +846,9 @@ module.exports = function (intentRequest) {
       query_form.user_email != null &&
       query_form.user_phone != null &&
       query_form.user_des != null &&
-      query_form.is_complete == null &&
-      config.is_send_discuss == false
+      query_form.is_complete == null
     ) {
-      config.user_details.user_des = intentRequest.inputTranscript;
+      console.log('roru');
       if (intentRequest.requestAttributes != null) {
         var platform =
           intentRequest.requestAttributes['x-amz-lex:channel-type'];
@@ -876,157 +857,107 @@ module.exports = function (intentRequest) {
       }
       var message =
         'Thank you for sharing your Project/Idea. We will call you between ' +
-        query_form.user_time +
+        config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
-        query_form.user_day +
+        config.user_details.user_day +
         '\n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
         console.log('platform web');
         var message =
           '<div> Thank you for sharing your Project/Idea. We will call you between ' +
-          query_form.user_time +
+          config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
-          query_form.user_day +
+          config.user_details.user_day +
           '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
       }
-      if (config.is_send_discuss == 'true') {
-        console.log('alexa');
-        let genericAttachments = [
-          {
-            attachmentLinkUrl: null,
-            buttons: [
-              {
-                text: 'Yes',
-                value: 'Yes',
-              },
-              {
-                text: 'No',
-                value: 'No',
-              },
-            ],
-            imageUrl: null,
-            subTitle: '...',
-            title: 'Anything else I can help you with? ',
-          },
-        ];
-        return lexResponses.elicitSlot(
-          intentRequest.sessionAttributes,
-          'DiscussIntent',
-          {
-            user_company: query_form.user_company,
-            user_des: query_form.user_des,
-            user_email: query_form.user_email,
-            user_name: query_form.user_name,
-            user_phone: query_form.user_phone,
-            company_size: query_form.company_size,
-            userr_type: query_form.userr_type,
-            user_day: query_form.user_day,
-            user_time: query_form.user_time,
-            is_complete: null,
-          },
-          'is_complete',
-          message,
-          genericAttachments
-        );
-      } else {
-        console.log(is_sent, 'roru');
-        if (intentRequest.requestAttributes != null) {
-          var platform =
-            intentRequest.requestAttributes['x-amz-lex:channel-type'];
-        } else {
-          var platform = 'Web';
-        }
-        var slack_msg =
-          'Hi *' +
+      var slack_msg =
+        'Hi *' +
+        query_form.user_name +
+        '* has booked a Project Discussion session from ' +
+        platform +
+        '. His/Her details are given below : \n' +
+        'E-mail Id :' +
+        query_form.user_email +
+        '\n Contact number : ' +
+        query_form.user_phone +
+        '\n Company Name : ' +
+        query_form.user_company +
+        '\n Company Size : ' +
+        query_form.company_size +
+        '\n Project Description:' +
+        query_form.user_des +
+        '\n Contact Day :' +
+        query_form.user_day +
+        '\n Contact Time : ' +
+        query_form.user_time +
+        '\n User Type : ' +
+        query_form.userr_type;
+      sendSlackMsg(slack_msg, myResult => {
+        console.log('Slack message sent : ' + myResult);
+        var status = common.sendEmail(
+          '<span>Hi <b>' +
           query_form.user_name +
-          '* has booked a Project Discussion session from ' +
+          '</b> has booked a Project Discussion session from ' +
           platform +
-          '. His/Her details are given below : \n' +
-          'E-mail Id :' +
+          '. His/Her details are given below:</span> <br>' +
+          ' E-mail Id : ' +
           query_form.user_email +
-          '\n Contact number : ' +
+          '\<br> Contact number : ' +
           query_form.user_phone +
-          '\n Company Name : ' +
+          '<br> Company Name : ' +
           query_form.user_company +
-          '\n Company Size : ' +
+          '<br> User Type : ' +
+          query_form.userr_type +
+          '<br> Company Size : ' +
           query_form.company_size +
-          '\n Project Description:' +
+          '<br> Project Description : ' +
           query_form.user_des +
-          '\n Contact Day :' +
+          '<br> Contact Day : ' +
           query_form.user_day +
-          '\n Contact Time : ' +
-          query_form.user_time +
-          '\n User Type : ' +
-          query_form.userr_type;
-        sendSlackMsg(slack_msg, myResult => {
-          console.log('Slack message sent : ' + myResult);
-
-          console.log(is_sent, 'message sent');
-          var status = common.sendEmail(
-            '<span>Hi <b>' +
-            query_form.user_name +
-            '</b> has booked a Project Discussion session from ' +
-            platform +
-            '. His/Her details are given below:</span> <br>' +
-            ' E-mail Id : ' +
-            query_form.user_email +
-            '\<br> Contact number : ' +
-            query_form.user_phone +
-            '<br> Company Name : ' +
-            query_form.user_company +
-            '<br> User Type : ' +
-            query_form.userr_type +
-            '<br> Company Size : ' +
-            query_form.company_size +
-            '<br> Project Description : ' +
-            query_form.user_des +
-            '<br> Contact Day : ' +
-            query_form.user_day +
-            '<br> Contact Time : ' +
-            query_form.user_time,
-            'Iris Project Discussion Request From' + platform
-          );
-        });
-
-        let genericAttachments = [
-          {
-            attachmentLinkUrl: null,
-            buttons: [
-              {
-                text: 'Yes',
-                value: 'Yes',
-              },
-              {
-                text: 'No',
-                value: 'No',
-              },
-            ],
-            imageUrl: null,
-            subTitle: '...',
-            title: 'Anything else I can help you with? ',
-          },
-        ];
-        return lexResponses.elicitSlot(
-          intentRequest.sessionAttributes,
-          'DiscussIntent',
-          {
-            user_company: query_form.user_company,
-            user_des: query_form.user_des,
-            user_email: query_form.user_email,
-            user_name: query_form.user_name,
-            user_phone: query_form.user_phone,
-            company_size: query_form.company_size,
-            userr_type: query_form.userr_type,
-            user_day: query_form.user_day,
-            user_time: query_form.user_time,
-            is_complete: null,
-          },
-          'is_complete',
-          message,
-          genericAttachments
+          '<br> Contact Time : ' +
+          query_form.user_time,
+          'Iris Project Discussion Request From' + platform
         );
-      }
+      });
+
+      let genericAttachments = [
+        {
+          attachmentLinkUrl: null,
+          buttons: [
+            {
+              text: 'Yes',
+              value: 'Yes',
+            },
+            {
+              text: 'No',
+              value: 'No',
+            },
+          ],
+          imageUrl: null,
+          subTitle: '...',
+          title: 'Anything else I can help you with? ',
+        },
+      ];
+      return lexResponses.elicitSlot(
+        intentRequest.sessionAttributes,
+        'DiscussIntent',
+        {
+          user_company: query_form.user_company,
+          user_des: query_form.user_des,
+          user_email: query_form.user_email,
+          user_name: query_form.user_name,
+          user_phone: query_form.user_phone,
+          company_size: query_form.company_size,
+          userr_type: query_form.userr_type,
+          user_day: query_form.user_day,
+          user_time: query_form.user_time,
+          is_complete: null,
+        },
+        'is_complete',
+        message,
+        genericAttachments
+      );
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
@@ -1035,109 +966,111 @@ module.exports = function (intentRequest) {
       query_form.is_complete == 'Yes'
       // config.current_step == 'discussIntent'
     ) {
-      console.log('jj');
-      config.is_send_discuss = false;
-      config.current_step = '';
+      console.log('jj block');
+      if (
+        intentRequest.inputTranscript == 'Yes' ||
+        intentRequest.inputTranscript == 'No'
+      ) {
+        console.log('burb');
+        config.current_step = '';
 
-      let genericAttachments = [
-        {
-          attachmentLinkUrl: null,
-          buttons: [
-            {
-              text: 'General Enquiry?',
-              value: 'General Enquiry',
-            },
-            {
-              text: 'Business Enquiry?',
-              value: 'Business Enquiry',
-            },
-          ],
-          imageUrl: null,
-          subTitle: '...',
-          title: 'Do you have a',
-        },
-      ];
-      return lexResponses.elicitSlot(
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'General Enquiry?',
+                value: 'General Enquiry',
+              },
+              {
+                text: 'Business Enquiry?',
+                value: 'Business Enquiry',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Do you have a',
+          },
+        ];
+        return lexResponses.elicitSlot(
+          intentRequest.sessionAttributes,
+          'Greeting',
+          { query: null },
+          'query',
+          'Okay, How can i help you?',
+          genericAttachments
+        );
+      } else {
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'Yes',
+                value: 'Yes',
+              },
+              {
+                text: 'No',
+                value: 'No',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Anything else I can help you with? ',
+          },
+        ];
+
+        return lexResponses.elicitSlot(
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: query_form.user_des,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: query_form.user_day,
+            user_time: query_form.user_time,
+            is_complete: null,
+          },
+          'is_complete',
+          'Thank you for sharing your Project/Idea. We will call you between ' +
+          query_form.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          query_form.user_day +
+          '.' +
+          '\n' +
+          '\n For more queries you may send an email to business@prologictechnologies.in',
+          genericAttachments
+        );
+      }
+    } else if (
+      query_form.user_name != null &&
+      query_form.user_email != null &&
+      query_form.user_phone != null &&
+      query_form.user_des != null &&
+      query_form.is_complete == 'No'
+      // (config.current_step == 'discussIntent' && query_form.is_complete == null)
+    ) {
+      var msg = 'Thank You. Have a great day! :)';
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
+        }
+      } else {
+        var msg =
+          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
+      }
+      return lexResponses.close(
         intentRequest.sessionAttributes,
-        'Greeting',
-        { query: null },
-        'query',
-        'Okay, How can i help you?',
-        genericAttachments
+        'Fulfilled',
+        msg
       );
     }
-  } else if (
-    query_form.user_name != null &&
-    query_form.user_email != null &&
-    query_form.user_phone != null &&
-    query_form.user_des != null &&
-    query_form.is_complete == 'No'
-    // (config.current_step == 'discussIntent' && query_form.is_complete == null)
-  ) {
-    config.is_send_discuss = false;
-    var msg = 'Thank You. Have a great day! :)';
-    if (intentRequest.requestAttributes != null) {
-      if (
-        intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
-      ) {
-        var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
-      }
-    } else {
-      var msg =
-        'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
-    }
-    return lexResponses.close(
-      intentRequest.sessionAttributes,
-      'Fulfilled',
-      msg
-    );
-  }
-
-  else if (config.is_send_discuss == 'true') {
-    console.log('last block');
-    let genericAttachments = [
-      {
-        attachmentLinkUrl: null,
-        buttons: [
-          {
-            text: 'Yes',
-            value: 'Yes',
-          },
-          {
-            text: 'No',
-            value: 'No',
-          },
-        ],
-        imageUrl: null,
-        subTitle: '...',
-        title: 'Anything else I can help you with? ',
-      },
-    ];
-    return lexResponses.elicitSlot(
-      intentRequest.sessionAttributes,
-      'DiscussIntent',
-      {
-        user_company: query_form.user_company,
-        user_des: query_form.user_des,
-        user_email: query_form.user_email,
-        user_name: query_form.user_name,
-        user_phone: query_form.user_phone,
-        company_size: query_form.company_size,
-        userr_type: query_form.userr_type,
-        user_day: query_form.user_day,
-        user_time: query_form.user_time,
-        is_complete: null,
-      },
-      'is_complete',
-      'Thank you for sharing your Project/Idea. We will call you between ' +
-      query_form.user_time +
-      ' (IST, + 5.5 GMT) on ' +
-      query_form.user_day +
-      '.' +
-      '\n' +
-      '\n For more queries you may send an email to business@prologictechnologies.in',
-      genericAttachments
-    );
   }
 };
 
@@ -1149,7 +1082,7 @@ function sendSlackMsg(postm, callback) {
 
   var post_options = {
     host: 'hooks.slack.com',
-    path: '/services/T5676QE8N/BD5VAL5JP/bRgApPuynJxt6yPZoN9p6A9b',
+    path: '/services/T5676QE8N/BBYUHJB1A/N1AZzu3MjtyT6RsEUsxg6Y8N',
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
