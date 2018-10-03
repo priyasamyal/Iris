@@ -13,7 +13,7 @@ module.exports = function (intentRequest) {
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
-  console.log(query_form.user_name, 'form value', query_form);
+  console.log(query_form.user_name, 'form value updated', query_form);
   if (intentRequest.inputTranscript.indexOf('<mailto:') !== -1) {
     mail = intentRequest.inputTranscript.split('|');
     mail = mail[1].split('>');
@@ -237,6 +237,14 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
+
+      var message = "Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/";
+
+      if (platform == 'Web') {
+        console.log("platform web");
+        var message = '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+
+      }
       var slack_msg =
         'Hi *' +
         config.user_details.user_name +
@@ -297,7 +305,7 @@ module.exports = function (intentRequest) {
           is_complete: null,
         },
         'is_complete',
-        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/',
+        message,
         genericAttachments
       );
     } else if (
