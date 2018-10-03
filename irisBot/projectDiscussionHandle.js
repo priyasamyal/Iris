@@ -213,7 +213,9 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (config.current_step == 'discussIntent') {
+      console.log ('phela');
       config.current_step = '';
+      is_sent = 'true';
 
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -271,7 +273,7 @@ module.exports = function (intentRequest) {
           'Iris Project Discussion Request   ' + platform
         );
       });
-      is_sent = 'true';
+
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
@@ -597,7 +599,7 @@ module.exports = function (intentRequest) {
     ) {
       var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
       var contactno = /^\d+$/;
-      console.log (mail, 'mailmustang');
+
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
@@ -956,7 +958,7 @@ module.exports = function (intentRequest) {
             'Iris Project Discussion Request From' + platform
           );
         });
-        is_sent = 'true';
+
         let genericAttachments = [
           {
             attachmentLinkUrl: null,
