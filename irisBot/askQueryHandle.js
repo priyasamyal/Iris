@@ -25,6 +25,7 @@ module.exports = function (intentRequest) {
     if (config.current_step == 'discussIntent') {
       console.log(config.user_details, 'detailsssssssss');
       config.current_step = '';
+      config.is_send_discuss = 'true';
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
         var platform =
@@ -256,7 +257,6 @@ module.exports = function (intentRequest) {
         'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
-
         console.log('platform web');
         var message =
           '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
@@ -540,7 +540,7 @@ module.exports = function (intentRequest) {
           genericAttachments
         );
       } else {
-        config.is_send_ask = true
+        config.is_send_ask = true;
 
         if (intentRequest.requestAttributes != null) {
           var platform =
@@ -628,7 +628,7 @@ module.exports = function (intentRequest) {
       query_form.user_query != null &&
       query_form.is_complete == 'Yes'
     ) {
-      config.is_send_ask = false
+      config.is_send_ask = false;
       config.current_step = '';
       let genericAttachments = [
         {
@@ -680,8 +680,7 @@ module.exports = function (intentRequest) {
         'Fulfilled',
         msg
       );
-    }
-    else if (config.is_send_ask == true) {
+    } else if (config.is_send_ask == true) {
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
