@@ -144,7 +144,7 @@ module.exports = function (intentRequest) {
 
     if (intentRequest.currentIntent.slots.career == 'Apply Now') {
       let message =
-        'Sure, I can help you process your application right now. Please type in your first name.';
+        'Sure, I can help you process your application right now. Please enter your name.';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',

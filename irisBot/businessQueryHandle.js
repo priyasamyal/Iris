@@ -67,7 +67,7 @@ module.exports = function (intentRequest) {
 
     if (intentRequest.currentIntent.slots.bus_query == 'Book a consultation ') {
       let message =
-        'Wow! I am excited. Our experts are here to help. \nMay i know your first name?';
+        'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ConsultIntent',

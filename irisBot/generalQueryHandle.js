@@ -35,22 +35,26 @@ module.exports = function (intentRequest) {
       return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'UserQuery',
-        {query_gen: 'Service', is_complete: null},
+        {query_gen: 'Service Query', is_complete: null},
         'query_gen',
         'Okay, Can you please be specific?',
         genericAttachments
       );
     } else if (
-      intentRequest.currentIntent.slots.query_gen == 'Service' &&
+      intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
       intentRequest.currentIntent.slots.is_complete == null
     ) {
+      // if (intentRequest.inputTranscript != 'Service Query') {
+      //   console.log ('vmart');
+      // } else {
       if (intentRequest.requestAttributes != null) {
         var message =
-          'We are a Specialized Digital Agency with expertise in:  <br/>1. *IT Consulting* \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. *Web And Mobile Engineering* \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. *Mobile Website Designs* \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. *Healthcare Solutions* \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
+          'We are a Specialized Digital Agency with expertise in:  1. *IT Consulting* \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. *Web And Mobile Engineering* \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. *Mobile Website Designs* \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. *Healthcare Solutions* \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
       } else {
         var message =
-          'We are a Specialized Digital Agency with expertise in:  &lt;br&gt;1. *IT Consulting* \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. *Web And Mobile Engineering* \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. *Mobile Website Designs* \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. *Healthcare Solutions* \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
+          '<div>We are a Specialized Digital Agency with expertise in:  <br/>1. <b>IT Consulting </b> <br/> &nbsp;Telemedicine Solutions <br/>&nbsp;Web Engineering<br/>&nbsp;Mobilty Solutions<br/> &nbsp;UI/ UX Services.<br/> 2.<b>Web And Mobile Engineering</b><br/> &nbsp;Bespoke Web Development <br/> &nbsp;Hybrid And Native Mobile Apps<br/> &nbsp;WebRTC Solutions Using Tokbox<br/> &nbsp;Social Commerce<br/> &nbsp;Payment Gateway Integration<br/>3. <b>Mobile Website Designs</b><br/> &nbsp;Responsive UI Designs<br/> &nbsp;Enhanced User Experience<br/>4. <b>Healthcare Solutions</b> <br/> &nbsp;Bespoke Telemedicine Platforms<br/>&nbsp;Custom TeleNutrition Solutions<br/> &nbsp;Fitness And Wellness Applications<br/>For more details, you can visit <a href="https://www.prologic-technologies.com/"> https://www.prologic-technologies.com/ </a></div>';
       }
+      // }
 
       let genericAttachments = [
         {
@@ -74,13 +78,13 @@ module.exports = function (intentRequest) {
       return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'UserQuery',
-        {query_gen: 'Service', is_complete: null},
+        {query_gen: 'Service Query', is_complete: null},
         'is_complete',
         message,
         genericAttachments
       );
     } else if (
-      intentRequest.currentIntent.slots.query_gen == 'Service' &&
+      intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
       intentRequest.currentIntent.slots.is_complete == 'Yes'
     ) {
       let genericAttachments = [
@@ -110,7 +114,7 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (
-      intentRequest.currentIntent.slots.query_gen == 'Service' &&
+      intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
       intentRequest.currentIntent.slots.is_complete == 'No'
     ) {
       var msg = 'Thank You. Have a great day! :)';

@@ -14,9 +14,11 @@ module.exports = function (intentRequest) {
   );
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
+  var mail;
+//  updated code 
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
-    var mail = intentRequest.inputTranscript.split ('|');
+    mail = intentRequest.inputTranscript.split ('|');
     mail = mail[1].split ('>');
     query_form.user_email = mail[0];
     console.log (mail, 'split perform', query_form);
@@ -369,48 +371,74 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      let genericAttachments = [
-        {
-          attachmentLinkUrl: null,
-          buttons: [
-            {
-              text: 'an Individual',
-              value: 'an Individual',
-            },
+      var namePattern = /^[A-Za-z ]+$/;
+      var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
+      if (!nameVAlidation) {
+        console.log ('pologt');
+        let message =
+          'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name please?';
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: null,
+            user_des: null,
+            user_email: null,
+            user_name: null,
+            user_phone: null,
+            company_size: null,
+            userr_type: null,
+            user_day: null,
+            user_time: null,
+            is_complete: null,
+          },
+          'user_name',
+          message
+        );
+      } else {
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'an Individual',
+                value: 'an Individual',
+              },
 
-            {
-              text: 'Start-up',
-              value: 'Start-Up',
-            },
-            {
-              text: 'SME',
-              value: 'SME',
-            },
-          ],
-          imageUrl: null,
-          subTitle: '...',
-          title: 'Are you?',
-        },
-      ];
-      return lexResponses.elicitSlot (
-        intentRequest.sessionAttributes,
-        'DiscussIntent',
-        {
-          user_company: null,
-          user_des: null,
-          user_email: null,
-          user_name: query_form.user_name,
-          user_phone: null,
-          company_size: null,
-          userr_type: null,
-          user_day: null,
-          user_time: null,
-          is_complete: null,
-        },
-        'userr_type',
-        'Please specify your user type.',
-        genericAttachments
-      );
+              {
+                text: 'Start-up',
+                value: 'Start-Up',
+              },
+              {
+                text: 'SME',
+                value: 'SME',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Are you?',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: null,
+            user_des: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            company_size: null,
+            userr_type: null,
+            user_day: null,
+            user_time: null,
+            is_complete: null,
+          },
+          'userr_type',
+          'Please specify your user type.',
+          genericAttachments
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email == null &&
@@ -500,25 +528,50 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      let message = 'And your email address please?';
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'DiscussIntent',
-        {
-          user_company: query_form.user_company,
-          user_des: null,
-          user_email: null,
-          user_name: query_form.user_name,
-          user_phone: query_form.user_phone,
-          company_size: query_form.company_size,
-          userr_type: query_form.userr_type,
-          user_day: null,
-          user_time: null,
-          is_complete: null,
-        },
-        'user_email',
-        message
-      );
+      if (
+        intentRequest.inputTranscript.length < 7 ||
+        intentRequest.inputTranscript.length > 13
+      ) {
+        let message = 'May I have your phone number?';
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: null,
+            user_time: null,
+            is_complete: null,
+          },
+          'user_phone',
+          message
+        );
+      } else {
+        let message = 'And your email address please?';
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: null,
+            user_time: null,
+            is_complete: null,
+          },
+          'user_email',
+          message
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
@@ -527,29 +580,114 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
+      var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+      var contactno = /^\d+$/;
+      console.log (mail, 'mailmustang');
       if (intentRequest.requestAttributes != null) {
         if (
-          intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
-          'Facebook'
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
         ) {
-          return lexResponses.elicitSlotWithoutCard (
-            intentRequest.sessionAttributes,
-            'DiscussIntent',
-            {
-              user_company: query_form.user_company,
-              user_des: null,
-              user_email: query_form.user_email,
-              user_name: query_form.user_name,
-              user_phone: query_form.user_phone,
-              company_size: query_form.company_size,
-              userr_type: query_form.userr_type,
-              user_day: null,
-              user_time: null,
-              is_complete: null,
-            },
-            'user_day',
-            'Best day to contact you'
+          var emailValidation = emailPattern.test (mail[0]);
+        } else {
+          var emailValidation = emailPattern.test (
+            intentRequest.inputTranscript
           );
+        }
+      } else {
+        var emailValidation = emailPattern.test (intentRequest.inputTranscript);
+      }
+
+      let message = 'And your email address please?';
+      if (!emailValidation) {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: null,
+            user_time: null,
+            is_complete: null,
+          },
+          'user_email',
+          message
+        );
+      } else {
+        if (intentRequest.requestAttributes != null) {
+          if (
+            intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
+            'Facebook'
+          ) {
+            return lexResponses.elicitSlotWithoutCard (
+              intentRequest.sessionAttributes,
+              'DiscussIntent',
+              {
+                user_company: query_form.user_company,
+                user_des: null,
+                user_email: query_form.user_email,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                company_size: query_form.company_size,
+                userr_type: query_form.userr_type,
+                user_day: null,
+                user_time: null,
+                is_complete: null,
+              },
+              'user_day',
+              'Best day to contact you'
+            );
+          } else {
+            var all_days = [
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+            ];
+            var d = new Date ();
+            var current_day = d.getDay ();
+            var show_days = [];
+            for (var i = 0; i < all_days.length; i++) {
+              show_days.push ({
+                text: all_days[i],
+                value: all_days[i],
+              });
+            }
+            console.log (show_days, JSON.stringify (show_days), 'show days');
+            let genericAttachments = [
+              {
+                attachmentLinkUrl: null,
+                buttons: show_days,
+                imageUrl: null,
+                subTitle: '...',
+                title: 'Choose a day.',
+              },
+            ];
+            return lexResponses.elicitSlot (
+              intentRequest.sessionAttributes,
+              'DiscussIntent',
+              {
+                user_company: query_form.user_company,
+                user_des: null,
+                user_email: query_form.user_email,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                company_size: query_form.company_size,
+                userr_type: query_form.userr_type,
+                user_day: null,
+                user_time: null,
+                is_complete: null,
+              },
+              'user_day',
+              'Best day to contact you',
+              genericAttachments
+            );
+          }
         } else {
           var all_days = [
             'Monday',
@@ -597,46 +735,6 @@ module.exports = function (intentRequest) {
             genericAttachments
           );
         }
-      } else {
-        var all_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-        var d = new Date ();
-        var current_day = d.getDay ();
-        var show_days = [];
-        for (var i = 0; i < all_days.length; i++) {
-          show_days.push ({
-            text: all_days[i],
-            value: all_days[i],
-          });
-        }
-        console.log (show_days, JSON.stringify (show_days), 'show days');
-        let genericAttachments = [
-          {
-            attachmentLinkUrl: null,
-            buttons: show_days,
-            imageUrl: null,
-            subTitle: '...',
-            title: 'Choose a day.',
-          },
-        ];
-        return lexResponses.elicitSlot (
-          intentRequest.sessionAttributes,
-          'DiscussIntent',
-          {
-            user_company: query_form.user_company,
-            user_des: null,
-            user_email: query_form.user_email,
-            user_name: query_form.user_name,
-            user_phone: query_form.user_phone,
-            company_size: query_form.company_size,
-            userr_type: query_form.userr_type,
-            user_day: null,
-            user_time: null,
-            is_complete: null,
-          },
-          'user_day',
-          'Best day to contact you',
-          genericAttachments
-        );
       }
     } else if (
       query_form.user_name != null &&
@@ -646,6 +744,15 @@ module.exports = function (intentRequest) {
       query_form.user_day != null &&
       query_form.user_time == null
     ) {
+      if (
+        intentRequest.inputTranscript == 'Monday' ||
+        intentRequest.inputTranscript == 'Tuesday' ||
+        intentRequest.inputTranscript == 'Wednesday' ||
+        intentRequest.inputTranscript == 'Thursday' ||
+        intentRequest.inputTranscript == 'Friday'
+      ) {
+        console.log ('abu');
+      }
       let message =
         'May i know a convenient time slot for phone call on ' +
         query_form.user_day +
@@ -664,13 +771,13 @@ module.exports = function (intentRequest) {
               value: '12:00 pm - 4:00 pm',
             },
             {
-              text: '4:00pm - 8:00 pm',
-              value: '4:00pm - 8:00 pm',
+              text: '4:00 pm - 8:00 pm',
+              value: '4:00 pm - 8:00 pm',
             },
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Indian Standard Time,+5.5 GMT',
+          title: 'Indian Standard Time, +5.5 GMT',
         },
       ];
       return lexResponses.elicitSlot (
@@ -729,6 +836,7 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
+      console.log ('roru');
       if (intentRequest.requestAttributes != null) {
         var platform =
           intentRequest.requestAttributes['x-amz-lex:channel-type'];
@@ -784,6 +892,7 @@ module.exports = function (intentRequest) {
           'Iris Project Discussion Request From' + platform
         );
       });
+
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
@@ -835,34 +944,85 @@ module.exports = function (intentRequest) {
       query_form.is_complete == 'Yes'
       // config.current_step == 'discussIntent'
     ) {
-      config.current_step = '';
+      console.log ('jj');
+      if (
+        intentRequest.inputTranscript == 'Yes' ||
+        intentRequest.inputTranscript == 'No'
+      ) {
+        console.log ('burb');
+        config.current_step = '';
 
-      let genericAttachments = [
-        {
-          attachmentLinkUrl: null,
-          buttons: [
-            {
-              text: 'General Enquiry?',
-              value: 'General Enquiry',
-            },
-            {
-              text: 'Business Enquiry?',
-              value: 'Business Enquiry',
-            },
-          ],
-          imageUrl: null,
-          subTitle: '...',
-          title: 'Do you have a',
-        },
-      ];
-      return lexResponses.elicitSlot (
-        intentRequest.sessionAttributes,
-        'Greeting',
-        {query: null},
-        'query',
-        'Okay, How can i help you?',
-        genericAttachments
-      );
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'General Enquiry?',
+                value: 'General Enquiry',
+              },
+              {
+                text: 'Business Enquiry?',
+                value: 'Business Enquiry',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Do you have a',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'Greeting',
+          {query: null},
+          'query',
+          'Okay, How can i help you?',
+          genericAttachments
+        );
+      } else {
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'Yes',
+                value: 'Yes',
+              },
+              {
+                text: 'No',
+                value: 'No',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Anything else I can help you with? ',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: query_form.user_des,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: query_form.user_day,
+            user_time: query_form.user_time,
+            is_complete: null,
+          },
+          'is_complete',
+          'Thank you for sharing your Project/Idea. We will call you between ' +
+            query_form.user_time +
+            ' (IST, + 5.5 GMT) on ' +
+            query_form.user_day +
+            '.' +
+            '\n' +
+            '\n For more queries you may send an email to business@prologictechnologies.in',
+          genericAttachments
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&

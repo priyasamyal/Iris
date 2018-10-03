@@ -12,9 +12,10 @@ module.exports = function (intentRequest) {
   );
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
+  var mail;
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
-    var mail = intentRequest.inputTranscript.split ('|');
+    mail = intentRequest.inputTranscript.split ('|');
     mail = mail[1].split ('>');
     query_form.user_email = mail[0];
     console.log (mail, 'split perform', query_form);
@@ -306,17 +307,17 @@ module.exports = function (intentRequest) {
       query_form.user_query == null
     ) {
       var message =
-        ' I am happy to help :) and would need some details. Can I have your first name, please?';
+        ' I am happy to help :) and would need some details. Can I have your name, please?';
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
         ) {
           var message =
-            'I am happy to help :slightly_smiling_face: and would need some details. Can I have your first name, please?';
+            'I am happy to help :slightly_smiling_face: and would need some details. Can I have your name, please?';
         }
       } else {
         var message =
-          ' I am happy to help 🙂 and would need some details. Can I have your first name, please?';
+          ' I am happy to help 🙂 and would need some details. Can I have your name, please?';
       }
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
@@ -337,59 +338,127 @@ module.exports = function (intentRequest) {
       query_form.user_contact == null &&
       query_form.user_query == null
     ) {
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'AskQuery',
-        {
-          user_contact: null,
-          user_email: null,
-          user_name: query_form.user_name,
-          user_query: null,
-          is_complete: null,
-        },
-        'user_email',
-        'Your email address please?'
-      );
+      var namePattern = /^[A-Za-z ]+$/;
+      var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
+      if (!nameVAlidation) {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: null,
+            user_email: null,
+            user_name: null,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_name',
+          message
+        );
+      } else {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_email',
+          'Your email address please?'
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
       query_form.user_contact == null &&
       query_form.user_query == null
     ) {
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'AskQuery',
-        {
-          user_contact: null,
-          user_email: query_form.user_email,
-          user_name: query_form.user_name,
-          user_query: null,
-          is_complete: null,
-        },
-        'user_contact',
-        'And your phone number?'
-      );
+      var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var emailValidation = emailPattern.test (mail[0]);
+        } else {
+          var emailValidation = emailPattern.test (
+            intentRequest.inputTranscript
+          );
+        }
+      } else {
+        var emailValidation = emailPattern.test (intentRequest.inputTranscript);
+      }
+      if (!emailValidation) {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: null,
+            user_email: null,
+            user_name: query_form.user_name,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_email',
+          'Your email address please?'
+        );
+      } else {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: null,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_contact',
+          'And your phone number?'
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
       query_form.user_contact != null &&
       query_form.user_query == null
     ) {
-      config.current_step = 'askqueryIntent';
-      config.user_details = query_form;
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'AskQuery',
-        {
-          user_contact: query_form.user_contact,
-          user_email: query_form.user_email,
-          user_name: query_form.user_name,
-          user_query: null,
-          is_complete: null,
-        },
-        'user_query',
-        'Please describe your query.'
-      );
+      if (
+        intentRequest.inputTranscript.length < 7 ||
+        intentRequest.inputTranscript.length > 13
+      ) {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: null,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_contact',
+          'And your phone number?'
+        );
+      } else {
+        config.current_step = 'askqueryIntent';
+        config.user_details = query_form;
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'AskQuery',
+          {
+            user_contact: query_form.user_contact,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_query: null,
+            is_complete: null,
+          },
+          'user_query',
+          'Please describe your query.'
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&

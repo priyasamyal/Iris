@@ -13,9 +13,10 @@ module.exports = function (intentRequest) {
   );
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
+  var mail;
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
-    var mail = intentRequest.inputTranscript.split ('|');
+    mail = intentRequest.inputTranscript.split ('|');
     mail = mail[1].split ('>');
     query_form.user_email = mail[0];
     console.log (mail, 'split perform', query_form);
@@ -30,7 +31,7 @@ module.exports = function (intentRequest) {
       query_form.user_vacancy == null
     ) {
       let message =
-        'Sure, I can help you process your application right now. Please type in your first name.';
+        'Sure, I can help you process your application right now. Please enter your name.';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ApplyNow',
@@ -54,21 +55,43 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'ApplyNow',
-        {
-          user_email: null,
-          user_experience: null,
-          user_name: query_form.user_name,
-          user_phone: null,
-          user_qualification: null,
-          user_vacancy: null,
-          is_complete: null,
-        },
-        'user_email',
-        'Can I have your email address please?'
-      );
+      var namePattern = /^[A-Za-z ]+$/;
+      var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
+      if (!nameVAlidation) {
+        let message =
+          'Sure, I can help you process your application right now. Please enter your name.';
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: null,
+            user_experience: null,
+            user_name: null,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_name',
+          message
+        );
+      } else {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: null,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_email',
+          'Can I have your email address please?'
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
@@ -77,21 +100,57 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
-      return lexResponses.elicitSlotWithoutCard (
-        intentRequest.sessionAttributes,
-        'ApplyNow',
-        {
-          user_email: query_form.user_email,
-          user_experience: null,
-          user_name: query_form.user_name,
-          user_phone: null,
-          user_qualification: null,
-          user_vacancy: null,
-          is_complete: null,
-        },
-        'user_phone',
-        'Also your phone number please?'
-      );
+      var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+      console.log (mail, 'mailmail');
+
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var emailValidation = emailPattern.test (mail[0]);
+        } else {
+          var emailValidation = emailPattern.test (
+            intentRequest.inputTranscript
+          );
+        }
+      } else {
+        var emailValidation = emailPattern.test (intentRequest.inputTranscript);
+      }
+      console.log ('ram');
+      if (!emailValidation) {
+        console.log ('vap');
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: null,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_email',
+          'Can I have your email address please?'
+        );
+      } else {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: query_form.user_email,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_phone',
+          'Also your phone number please?'
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
@@ -100,29 +159,99 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
-      if (intentRequest.requestAttributes != null) {
-        if (
-          intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
-          'Facebook'
-        ) {
-          console.log (intentRequest.inputTranscript, 'blahblah');
+      if (
+        intentRequest.inputTranscript.length < 7 ||
+        intentRequest.inputTranscript.length > 13
+      ) {
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: query_form.user_email,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_phone',
+          'Also your phone number please?'
+        );
+      } else {
+        if (intentRequest.requestAttributes != null) {
+          if (
+            intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
+            'Facebook'
+          ) {
+            console.log (intentRequest.inputTranscript, 'blahblah');
 
-          console.log (query_form.user_qualification);
-          return lexResponses.elicitSlotWithoutCard (
-            intentRequest.sessionAttributes,
-            'ApplyNow',
-            {
-              user_email: query_form.user_email,
-              user_experience: null,
-              user_name: query_form.user_name,
-              user_phone: query_form.user_phone,
-              user_qualification: null,
-              user_vacancy: null,
-              is_complete: null,
-            },
-            'user_qualification',
-            '*I would like to know  your highest educational qualification?* \n Type 1 for B.Tech \n Type 2 for MCA \n Type 3 for BCA \n Type 4 for MBA \n Type 5 for Others'
-          );
+            console.log (query_form.user_qualification);
+            return lexResponses.elicitSlotWithoutCard (
+              intentRequest.sessionAttributes,
+              'ApplyNow',
+              {
+                user_email: query_form.user_email,
+                user_experience: null,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                user_qualification: null,
+                user_vacancy: null,
+                is_complete: null,
+              },
+              'user_qualification',
+              '*I would like to know  your highest educational qualification?* \n Type 1 for B.Tech \n Type 2 for MCA \n Type 3 for BCA \n Type 4 for MBA \n Type 5 for Others'
+            );
+          } else {
+            let genericAttachments = [
+              {
+                attachmentLinkUrl: null,
+                buttons: [
+                  {
+                    text: 'B.Tech',
+                    value: 'B.Tech',
+                  },
+
+                  {
+                    text: 'MCA',
+                    value: 'MCA',
+                  },
+                  {
+                    text: 'BCA',
+                    value: 'BCA',
+                  },
+
+                  {
+                    text: 'MBA',
+                    value: 'MBA',
+                  },
+                  {
+                    text: 'Others',
+                    value: 'Others',
+                  },
+                ],
+                imageUrl: null,
+                subTitle: 'Select your qualification',
+                title: 'Please choose one',
+              },
+            ];
+            return lexResponses.elicitSlot (
+              intentRequest.sessionAttributes,
+              'ApplyNow',
+              {
+                user_email: query_form.user_email,
+                user_experience: null,
+                user_name: query_form.user_name,
+                user_phone: query_form.user_phone,
+                user_qualification: null,
+                user_vacancy: null,
+                is_complete: null,
+              },
+              'user_qualification',
+              'I would like to know  your highest educational qualification?',
+              genericAttachments
+            );
+          }
         } else {
           let genericAttachments = [
             {
@@ -153,7 +282,7 @@ module.exports = function (intentRequest) {
               ],
               imageUrl: null,
               subTitle: 'Select your qualification',
-              title: 'Educational Qualification',
+              title: 'Please choose one ',
             },
           ];
           return lexResponses.elicitSlot (
@@ -173,55 +302,6 @@ module.exports = function (intentRequest) {
             genericAttachments
           );
         }
-      } else {
-        let genericAttachments = [
-          {
-            attachmentLinkUrl: null,
-            buttons: [
-              {
-                text: 'B.Tech',
-                value: 'B.Tech',
-              },
-
-              {
-                text: 'MCA',
-                value: 'MCA',
-              },
-              {
-                text: 'BCA',
-                value: 'BCA',
-              },
-
-              {
-                text: 'MBA',
-                value: 'MBA',
-              },
-              {
-                text: 'Others',
-                value: 'Others',
-              },
-            ],
-            imageUrl: null,
-            subTitle: 'Select your qualification',
-            title: 'Educational Qualification',
-          },
-        ];
-        return lexResponses.elicitSlot (
-          intentRequest.sessionAttributes,
-          'ApplyNow',
-          {
-            user_email: query_form.user_email,
-            user_experience: null,
-            user_name: query_form.user_name,
-            user_phone: query_form.user_phone,
-            user_qualification: null,
-            user_vacancy: null,
-            is_complete: null,
-          },
-          'user_qualification',
-          'I would like to know  your highest educational qualification?',
-          genericAttachments
-        );
       }
     } else if (
       query_form.user_name != null &&
@@ -255,8 +335,8 @@ module.exports = function (intentRequest) {
               value: 'Upto 1 year',
             },
             {
-              text: 'Upto 2+ years',
-              value: 'Upto 2+ years',
+              text: 'Upto 2 years',
+              value: 'Upto 2 years',
             },
             // {
             //   text: 'Upto 3+ years',

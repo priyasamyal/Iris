@@ -373,7 +373,7 @@ module.exports = function (intentRequest) {
               },
               {
                 text: 'Service Query?',
-                value: 'Service',
+                value: 'Service Query',
               },
             ],
             imageUrl: null,
