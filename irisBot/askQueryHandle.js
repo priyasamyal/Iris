@@ -10,6 +10,7 @@ module.exports = function (intentRequest) {
   console.log(
     'intentRequest askquery  called ..' + '' + JSON.stringify(intentRequest)
   );
+  console.log(config.is_send_ask, "config.is_send_ask");
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
