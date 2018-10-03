@@ -15,7 +15,7 @@ module.exports = function (intentRequest) {
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
-  var is_sent = '';
+
   //  updated code
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
@@ -215,7 +215,7 @@ module.exports = function (intentRequest) {
     } else if (config.current_step == 'discussIntent') {
       console.log ('phela');
       config.current_step = '';
-      is_sent = 'true';
+      config.is_sendDiscuss = 'true';
 
       config.user_details.user_des = intentRequest.inputTranscript;
       if (intentRequest.requestAttributes != null) {
@@ -853,8 +853,7 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
-      console.log (is_sent, 'balm');
-      if (is_sent == 'true') {
+      if (config.is_sendDiscuss == 'true') {
         console.log ('alexa');
         let genericAttachments = [
           {
