@@ -980,6 +980,69 @@ module.exports = function (intentRequest) {
       );
     }
     // For second time enter
+
+    else if (
+      query_form.user_name != null &&
+      query_form.user_email != null &&
+      query_form.user_phone != null &&
+      query_form.user_des != null &&
+      query_form.is_complete == 'Yes'
+    ) {
+      config.is_send = false
+
+      config.current_step = '';
+      let genericAttachments = [
+        {
+          attachmentLinkUrl: null,
+          buttons: [
+            {
+              text: 'General Enquiry?',
+              value: 'General Enquiry',
+            },
+            {
+              text: 'Business Enquiry?',
+              value: 'Business Enquiry',
+            },
+          ],
+          imageUrl: null,
+          subTitle: '...',
+          title: 'Do you have a',
+        },
+      ];
+      return lexResponses.elicitSlot(
+        intentRequest.sessionAttributes,
+        'Greeting',
+        { query: null },
+        'query',
+        'Okay, How can i help you?',
+        genericAttachments
+      );
+    } else if (
+      query_form.user_name != null &&
+      query_form.user_email != null &&
+      query_form.user_phone != null &&
+      query_form.user_des != null &&
+      query_form.is_complete == 'No'
+    ) {
+      config.is_send = false
+      var msg = 'Thank You. Have a great day! :)';
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
+        }
+      } else {
+        var msg =
+          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
+      }
+      return lexResponses.close(
+        intentRequest.sessionAttributes,
+        'Fulfilled',
+        msg
+      );
+    }
+
     else if (config.is_send == true) {
       console.log("config.is_send.....")
       if (intentRequest.requestAttributes != null) {
@@ -1050,64 +1113,6 @@ module.exports = function (intentRequest) {
 
 
     //other
-    else if (
-      query_form.user_name != null &&
-      query_form.user_email != null &&
-      query_form.user_phone != null &&
-      query_form.user_des != null &&
-      query_form.is_complete == 'Yes'
-    ) {
-      config.current_step = '';
-      let genericAttachments = [
-        {
-          attachmentLinkUrl: null,
-          buttons: [
-            {
-              text: 'General Enquiry?',
-              value: 'General Enquiry',
-            },
-            {
-              text: 'Business Enquiry?',
-              value: 'Business Enquiry',
-            },
-          ],
-          imageUrl: null,
-          subTitle: '...',
-          title: 'Do you have a',
-        },
-      ];
-      return lexResponses.elicitSlot(
-        intentRequest.sessionAttributes,
-        'Greeting',
-        { query: null },
-        'query',
-        'Okay, How can i help you?',
-        genericAttachments
-      );
-    } else if (
-      query_form.user_name != null &&
-      query_form.user_email != null &&
-      query_form.user_phone != null &&
-      query_form.user_des != null &&
-      query_form.is_complete == 'No'
-    ) {
-      var msg = 'Thank You. Have a great day! :)';
-      if (intentRequest.requestAttributes != null) {
-        if (
-          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
-        ) {
-          var msg = 'Thank You. Have a great day! :slightly_smiling_face:';
-        }
-      } else {
-        var msg =
-          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
-      }
-      return lexResponses.close(
-        intentRequest.sessionAttributes,
-        'Fulfilled',
-        msg
-      );
-    }
   }
 };
 var https = require('https');
