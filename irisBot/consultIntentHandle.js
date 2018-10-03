@@ -416,7 +416,7 @@ module.exports = function (intentRequest) {
       if (!nameVAlidation) {
         console.log('a');
         let message =
-          'Wow! I am excited. Our experts are here to help. \nMay i know your first name?';
+          'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
         return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ConsultIntent',
