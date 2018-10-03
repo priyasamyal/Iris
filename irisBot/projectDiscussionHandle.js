@@ -35,6 +35,23 @@ module.exports = function (intentRequest) {
       } else {
         var platform = 'Web';
       }
+      var message =
+        'I have booked your free 30 minutes consultation with our expert. We will call between ' +
+        config.user_details.user_time +
+        ' (IST, + 5.5 GMT) on ' +
+        config.user_details.user_day +
+        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
+
+      if (platform == 'Web') {
+        console.log ('platform web');
+        var message =
+          '<div> I have booked your free 30 minutes consultation with our expert. We will call between ' +
+          config.user_details.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          config.user_details.user_day +
+          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
+      }
+
       var slack_msg =
         'Hi *' +
         config.user_details.user_name +
@@ -119,11 +136,7 @@ module.exports = function (intentRequest) {
           is_complete: null,
         },
         'is_complete',
-        'I have booked your free 30 minutes consultation with our expert. We will call between ' +
-          config.user_details.user_time +
-          ' (IST, + 5.5 GMT) on ' +
-          config.user_details.user_day +
-          '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/',
+        message,
         genericAttachments
       );
     } else if (config.current_step == 'askqueryIntent') {
@@ -837,7 +850,7 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
-      console.log ('balm');
+      console.log (is_sent, 'balm');
       if (is_sent == 'true') {
         console.log ('alexa');
         let genericAttachments = [
