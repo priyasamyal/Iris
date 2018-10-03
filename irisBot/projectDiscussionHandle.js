@@ -271,6 +271,7 @@ module.exports = function (intentRequest) {
           'Iris Project Discussion Request   ' + platform
         );
       });
+      is_sent = 'true';
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
@@ -928,7 +929,7 @@ module.exports = function (intentRequest) {
           query_form.userr_type;
         sendSlackMsg (slack_msg, myResult => {
           console.log ('Slack message sent : ' + myResult);
-          is_sent = 'true';
+
           console.log (is_sent, 'message sent');
           var status = common.sendEmail (
             '<span>Hi <b>' +
@@ -955,7 +956,7 @@ module.exports = function (intentRequest) {
             'Iris Project Discussion Request From' + platform
           );
         });
-
+        is_sent = 'true';
         let genericAttachments = [
           {
             attachmentLinkUrl: null,
