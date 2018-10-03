@@ -15,6 +15,7 @@ module.exports = function (intentRequest) {
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
   var mail;
+  var is_sent;
   //  updated code
   console.log (query_form.user_name, 'form value', query_form);
   if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
@@ -836,106 +837,155 @@ module.exports = function (intentRequest) {
       query_form.user_des != null &&
       query_form.is_complete == null
     ) {
-      console.log ('roru');
-      if (intentRequest.requestAttributes != null) {
-        var platform =
-          intentRequest.requestAttributes['x-amz-lex:channel-type'];
-      } else {
-        var platform = 'Web';
-      }
-      var slack_msg =
-        'Hi *' +
-        query_form.user_name +
-        '* has booked a Project Discussion session from ' +
-        platform +
-        '. His/Her details are given below : \n' +
-        'E-mail Id :' +
-        query_form.user_email +
-        '\n Contact number : ' +
-        query_form.user_phone +
-        '\n Company Name : ' +
-        query_form.user_company +
-        '\n Company Size : ' +
-        query_form.company_size +
-        '\n Project Description:' +
-        query_form.user_des +
-        '\n Contact Day :' +
-        query_form.user_day +
-        '\n Contact Time : ' +
-        query_form.user_time +
-        '\n User Type : ' +
-        query_form.userr_type;
-      sendSlackMsg (slack_msg, myResult => {
-        console.log ('Slack message sent : ' + myResult);
-        var status = common.sendEmail (
-          '<span>Hi <b>' +
-            query_form.user_name +
-            '</b> has booked a Project Discussion session from ' +
-            platform +
-            '. His/Her details are given below:</span> <br>' +
-            ' E-mail Id : ' +
-            query_form.user_email +
-            '\<br> Contact number : ' +
-            query_form.user_phone +
-            '<br> Company Name : ' +
-            query_form.user_company +
-            '<br> User Type : ' +
-            query_form.userr_type +
-            '<br> Company Size : ' +
-            query_form.company_size +
-            '<br> Project Description : ' +
-            query_form.user_des +
-            '<br> Contact Day : ' +
+      console.log ('balm');
+      if (is_sent == 'true') {
+        console.log ('alexa');
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'Yes',
+                value: 'Yes',
+              },
+              {
+                text: 'No',
+                value: 'No',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Anything else I can help you with? ',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: query_form.user_des,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: query_form.user_day,
+            user_time: query_form.user_time,
+            is_complete: null,
+          },
+          'is_complete',
+          'Thank you for sharing your Project/Idea. We will call you between ' +
+            query_form.user_time +
+            ' (IST, + 5.5 GMT) on ' +
             query_form.user_day +
-            '<br> Contact Time : ' +
-            query_form.user_time,
-          'Iris Project Discussion Request From' + platform
+            '.' +
+            '\n' +
+            '\n For more queries you may send an email to business@prologictechnologies.in',
+          genericAttachments
         );
-      });
-
-      let genericAttachments = [
-        {
-          attachmentLinkUrl: null,
-          buttons: [
-            {
-              text: 'Yes',
-              value: 'Yes',
-            },
-            {
-              text: 'No',
-              value: 'No',
-            },
-          ],
-          imageUrl: null,
-          subTitle: '...',
-          title: 'Anything else I can help you with? ',
-        },
-      ];
-      return lexResponses.elicitSlot (
-        intentRequest.sessionAttributes,
-        'DiscussIntent',
-        {
-          user_company: query_form.user_company,
-          user_des: query_form.user_des,
-          user_email: query_form.user_email,
-          user_name: query_form.user_name,
-          user_phone: query_form.user_phone,
-          company_size: query_form.company_size,
-          userr_type: query_form.userr_type,
-          user_day: query_form.user_day,
-          user_time: query_form.user_time,
-          is_complete: null,
-        },
-        'is_complete',
-        'Thank you for sharing your Project/Idea. We will call you between ' +
-          query_form.user_time +
-          ' (IST, + 5.5 GMT) on ' +
+      } else {
+        console.log ('roru');
+        if (intentRequest.requestAttributes != null) {
+          var platform =
+            intentRequest.requestAttributes['x-amz-lex:channel-type'];
+        } else {
+          var platform = 'Web';
+        }
+        var slack_msg =
+          'Hi *' +
+          query_form.user_name +
+          '* has booked a Project Discussion session from ' +
+          platform +
+          '. His/Her details are given below : \n' +
+          'E-mail Id :' +
+          query_form.user_email +
+          '\n Contact number : ' +
+          query_form.user_phone +
+          '\n Company Name : ' +
+          query_form.user_company +
+          '\n Company Size : ' +
+          query_form.company_size +
+          '\n Project Description:' +
+          query_form.user_des +
+          '\n Contact Day :' +
           query_form.user_day +
-          '.' +
-          '\n' +
-          '\n For more queries you may send an email to business@prologictechnologies.in',
-        genericAttachments
-      );
+          '\n Contact Time : ' +
+          query_form.user_time +
+          '\n User Type : ' +
+          query_form.userr_type;
+        sendSlackMsg (slack_msg, myResult => {
+          console.log ('Slack message sent : ' + myResult);
+          is_sent = 'true';
+          var status = common.sendEmail (
+            '<span>Hi <b>' +
+              query_form.user_name +
+              '</b> has booked a Project Discussion session from ' +
+              platform +
+              '. His/Her details are given below:</span> <br>' +
+              ' E-mail Id : ' +
+              query_form.user_email +
+              '\<br> Contact number : ' +
+              query_form.user_phone +
+              '<br> Company Name : ' +
+              query_form.user_company +
+              '<br> User Type : ' +
+              query_form.userr_type +
+              '<br> Company Size : ' +
+              query_form.company_size +
+              '<br> Project Description : ' +
+              query_form.user_des +
+              '<br> Contact Day : ' +
+              query_form.user_day +
+              '<br> Contact Time : ' +
+              query_form.user_time,
+            'Iris Project Discussion Request From' + platform
+          );
+        });
+
+        let genericAttachments = [
+          {
+            attachmentLinkUrl: null,
+            buttons: [
+              {
+                text: 'Yes',
+                value: 'Yes',
+              },
+              {
+                text: 'No',
+                value: 'No',
+              },
+            ],
+            imageUrl: null,
+            subTitle: '...',
+            title: 'Anything else I can help you with? ',
+          },
+        ];
+        return lexResponses.elicitSlot (
+          intentRequest.sessionAttributes,
+          'DiscussIntent',
+          {
+            user_company: query_form.user_company,
+            user_des: query_form.user_des,
+            user_email: query_form.user_email,
+            user_name: query_form.user_name,
+            user_phone: query_form.user_phone,
+            company_size: query_form.company_size,
+            userr_type: query_form.userr_type,
+            user_day: query_form.user_day,
+            user_time: query_form.user_time,
+            is_complete: null,
+          },
+          'is_complete',
+          'Thank you for sharing your Project/Idea. We will call you between ' +
+            query_form.user_time +
+            ' (IST, + 5.5 GMT) on ' +
+            query_form.user_day +
+            '.' +
+            '\n' +
+            '\n For more queries you may send an email to business@prologictechnologies.in',
+          genericAttachments
+        );
+      }
     } else if (
       query_form.user_name != null &&
       query_form.user_email != null &&
