@@ -47,7 +47,7 @@ module.exports = function (intentRequest) {
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
       intentRequest.currentIntent.slots.is_complete == null
     ) {
-      config.is_send_ourservices = false;
+      config.is_send_ourservices = true;
       // if (intentRequest.inputTranscript != 'Service Query') {
       //   console.log ('vmart');
       // } else {
