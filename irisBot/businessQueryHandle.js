@@ -1,13 +1,13 @@
 'use strict';
 
-const lexResponses = require ('../lexResponses');
-const config = require ('../lib/send_email.js');
+const lexResponses = require('../lexResponses');
+const config = require('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
-  console.log (
+  console.log(
     'intentRequest businessHandle  called ..' +
-      '' +
-      JSON.stringify (intentRequest)
+    '' +
+    JSON.stringify(intentRequest)
   );
   const source = intentRequest.invocationSource;
 
@@ -31,10 +31,10 @@ module.exports = function (intentRequest) {
           title: 'Would you like to',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'BusinessQuery',
-        {bus_query: null},
+        { bus_query: null },
         'bus_query',
         "I'm sure i can help you with this",
         genericAttachments
@@ -44,7 +44,7 @@ module.exports = function (intentRequest) {
     if (intentRequest.currentIntent.slots.bus_query == 'Discuss Project/Idea') {
       let message =
         'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name please?';
-      return lexResponses.elicitSlotWithoutCard (
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -68,7 +68,7 @@ module.exports = function (intentRequest) {
     ) {
       let message =
         'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
-      return lexResponses.elicitSlotWithoutCard (
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'ConsultIntent',
         {

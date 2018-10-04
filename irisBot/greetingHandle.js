@@ -37,8 +37,7 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
-
-          '<br/>For more queries you may send a mail to <b>business@prologictechnologies.in</b>   </div>';
+          '<br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a>  </div>';
       }
       config.user_details.user_des = intentRequest.inputTranscript;
       var slack_msg =
