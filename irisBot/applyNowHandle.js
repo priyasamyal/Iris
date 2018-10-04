@@ -57,9 +57,42 @@ module.exports = function (intentRequest) {
       query_form.user_experience == null &&
       query_form.user_vacancy == null
     ) {
+      var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
       var namePattern = /^[A-Za-z ]+$/;
       var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
-      if (!nameVAlidation) {
+
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var emailValidation = emailPattern.test (mail[0]);
+        } else {
+          var emailValidation = emailPattern.test (
+            intentRequest.inputTranscript
+          );
+        }
+      } else {
+        var emailValidation = emailPattern.test (intentRequest.inputTranscript);
+      }
+      console.log ('ram');
+      if (!emailValidation) {
+        console.log ('vap');
+        return lexResponses.elicitSlotWithoutCard (
+          intentRequest.sessionAttributes,
+          'ApplyNow',
+          {
+            user_email: null,
+            user_experience: null,
+            user_name: query_form.user_name,
+            user_phone: null,
+            user_qualification: null,
+            user_vacancy: null,
+            is_complete: null,
+          },
+          'user_email',
+          'Can I have your email address please?'
+        );
+      } else if (!nameVAlidation) {
         let message =
           'Sure, I can help you process your application right now. Please enter your name.';
         return lexResponses.elicitSlotWithoutCard (
@@ -678,7 +711,7 @@ module.exports = function (intentRequest) {
           }
         } else {
           var msg =
-            '<div> Thank You so much 🙂 . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
+            '<div> Thank You so much &#x1F642 . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
         }
 
         return lexResponses.elicitSlot (
@@ -753,7 +786,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
+          '<div>Thank You. Have a great day! &#x1F642.To start a new conversation say Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
@@ -799,7 +832,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div> Thank You so much 🙂 . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
+          '<div> Thank You so much &#x1F642 . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
       }
 
       return lexResponses.elicitSlot (

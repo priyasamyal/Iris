@@ -132,7 +132,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          'Thank You. Have a great day! 🙂.To start a new conversation say Hi';
+          '<div>Thank You. Have a great day! &#x1F642 .To start a new conversation say Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
