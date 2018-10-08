@@ -4,14 +4,15 @@ const lexResponses = require ('../lexResponses');
 const config = require ('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
-  console.log (
-    'intentRequest careerQueryHandle  called ..' +
-      '' +
-      JSON.stringify (intentRequest)
-  );
+  // console.log (
+  //   'intentRequest careerQueryHandle  called ..' +
+  //     '' +
+  //     JSON.stringify (intentRequest)
+  // );
   const source = intentRequest.invocationSource;
 
   if (source === 'DialogCodeHook') {
+    //check if someone type an uttereance of carrer query in askl query
     if (config.current_step == 'askqueryIntent') {
       config.current_step = '';
 
@@ -120,6 +121,7 @@ module.exports = function (intentRequest) {
         'Great! Do you wish to join our vibrant team?',
         genericAttachments
       );
+      // check for smiley on various platform
     } else if (intentRequest.currentIntent.slots.career == 'Learn More') {
       var message =
         'I am happy to help :) and would need some details. Can I have your name, please?';
@@ -132,7 +134,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var message =
-          '<div>I am happy to help &#x1F642 and would need some details. Can I have your  name, please?</div>';
+          '<div>I am happy to help &#x1F60A and would need some details. Can I have your  name, please?</div>';
       }
 
       return lexResponses.elicitSlotWithoutCard (
@@ -151,6 +153,7 @@ module.exports = function (intentRequest) {
     }
 
     if (intentRequest.currentIntent.slots.career == 'Apply Now') {
+      config.name_filled = true;
       let message =
         'Sure, I can help you process your application right now. Please enter your name.';
       return lexResponses.elicitSlotWithoutCard (
@@ -172,7 +175,7 @@ module.exports = function (intentRequest) {
   }
 
   if (source === 'FulfillmentCodeHook') {
-    console.log ('switch to User query intent');
+    // console.log ('switch to User query intent');
     let genericAttachments = [
       {
         attachmentLinkUrl: null,
@@ -202,6 +205,7 @@ module.exports = function (intentRequest) {
   }
 };
 var https = require ('https');
+// slack mnessage function
 function sendSlackMsg (postm, callback) {
   var post_data = {
     text: postm,

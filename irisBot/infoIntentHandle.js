@@ -2,11 +2,11 @@
 
 const lexResponses = require ('../lexResponses');
 module.exports = function (intentRequest) {
-  console.log (
-    'intentRequest infoIntentHandle  called ..' +
-      '' +
-      JSON.stringify (intentRequest)
-  );
+  // console.log (
+  //   'intentRequest infoIntentHandle  called ..' +
+  //     '' +
+  //     JSON.stringify (intentRequest)
+  // );
   const source = intentRequest.invocationSource;
   if (source === 'DialogCodeHook') {
     let message =

@@ -4,16 +4,16 @@ const lexResponses = require ('../lexResponses');
 const config = require ('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
-  console.log (
-    'intentRequest General Query Handle called' +
-      '' +
-      JSON.stringify (intentRequest)
-  );
+  // console.log (
+  //   'intentRequest General Query Handle called' +
+  //     '' +
+  //     JSON.stringify (intentRequest)
+  // );
 
   const source = intentRequest.invocationSource;
 
   if (source === 'DialogCodeHook') {
-    console.log (config.is_send_ourservices, 'ourour');
+    // console.log (config.is_send_ourservices, 'ourour');
 
     if (intentRequest.currentIntent.slots.query_gen == null) {
       config.is_send_ourservices = false;
@@ -51,9 +51,10 @@ module.exports = function (intentRequest) {
       // if (intentRequest.inputTranscript != 'Service Query') {
       //   console.log ('vmart');
       // } else {
+      // different message for different platforms so they can be html rendered
       if (intentRequest.requestAttributes != null) {
         var message =
-          'We are a Specialized Digital Agency with expertise in:  1. *IT Consulting* \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. *Web And Mobile Engineering* \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. *Mobile Website Designs* \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. *Healthcare Solutions* \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
+          'We are a Specialized Digital Agency with expertise in: \n 1. *IT Consulting* \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. *Web And Mobile Engineering* \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. *Mobile Website Designs* \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. *Healthcare Solutions* \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
       } else {
         var message =
           '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Bespoke Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. Mobile Website Designs</h2> <ul> <li>Responsive UI Designs</li><li>Enhanced User Experience</li></ul></div><div class="services_list"><h2>4. Healthcare Solutions</h2><ul><li>Bespoke Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul> </div><div class="services_list"><p>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a></div> </div> </div>';
@@ -89,7 +90,7 @@ module.exports = function (intentRequest) {
       );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete == 'Yes'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'YES'
     ) {
       config.is_send_ourservices = false;
       let genericAttachments = [
@@ -120,7 +121,7 @@ module.exports = function (intentRequest) {
       );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete == 'No'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'NO'
     ) {
       config.is_send_ourservices = false;
       var msg = 'Thank You. Have a great day! :)';
@@ -132,7 +133,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div>Thank You. Have a great day! &#x1F642 .To start a new conversation say Hi</div>';
+          '<div>Thank You. Have a great day! &#x1F60A .To start a new conversation say Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
@@ -167,19 +168,19 @@ module.exports = function (intentRequest) {
         genericAttachments
       );
     } else if (config.is_send_ourservices == true) {
-      console.log ('aaaaa');
-      console.log ('blue');
+      // console.log ('aaaaa');
+      // console.log ('blue');
       if (intentRequest.requestAttributes != null) {
         var platform =
           intentRequest.requestAttributes['x-amz-lex:channel-type'];
       } else {
-        console.log ('webweb');
+        // console.log ('webweb');
         var platform = 'Web';
       }
       var message =
         'We are a Specialized Digital Agency with expertise in: \n1. IT Consulting \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. Web And Mobile Engineering \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. Mobile Website Designs \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. Healthcare Solutions \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \nFor more details, you can visit https://www.prologic-technologies.com/';
       if (platform == 'Web') {
-        console.log ('webwebweb');
+        // console.log ('webwebweb');
 
         var message =
           '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Bespoke Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. Mobile Website Designs</h2> <ul> <li>Responsive UI Designs</li><li>Enhanced User Experience</li></ul></div><div class="services_list"><h2>4. Healthcare Solutions</h2><ul><li>Bespoke Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul> </div><div class="services_list"><p>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a></div> </div> </div>';
