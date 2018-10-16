@@ -29,7 +29,7 @@ module.exports = function (intentRequest) {
       if (platform == 'Web') {
         console.log ('platform web');
         var message =
-          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br/><br/> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -46,7 +46,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<h4>Hi <b>' +
+          '<pre><h4>Hi <b>' +
             config.user_details.user_name +
             '</b> has asked the following query from ' +
             platform +
@@ -56,7 +56,7 @@ module.exports = function (intentRequest) {
             config.user_details.user_email +
             ' </b>or contact number :<b>' +
             config.user_details.user_contact +
-            '</b>',
+            '</b></pre>',
           'Iris User Query from ' + platform
         );
       });
@@ -110,7 +110,7 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'You may apply now or choose a option to know more.',
+          title: 'You may apply now or choose to learn more about Prologic Technologies.',
         },
       ];
       return lexResponses.elicitSlot (

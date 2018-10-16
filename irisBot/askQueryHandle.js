@@ -40,7 +40,8 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
-        '\n For more queries you may send a mail to business@prologictechnologies.in';
+        '.' +
+        ' \n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
         // console.log ('platform web');
@@ -79,7 +80,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          ' <pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Project Discussion session from ' +
             platform +
@@ -99,7 +100,8 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
+            config.user_details.user_time +
+            '</pre>',
           'Iris Project Discussion Request   ' + platform
         );
       });
@@ -159,6 +161,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
+        '.' +
         '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
@@ -168,6 +171,7 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
+          '.' +
           '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
       }
       var slack_msg =
@@ -195,7 +199,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          '<pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Consultation session from' +
             platform +
@@ -215,7 +219,8 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
+            config.user_details.user_time +
+            '</pre>',
           'Iris Consultation session Request from ' + platform
         );
       });
@@ -275,7 +280,7 @@ module.exports = function (intentRequest) {
       if (platform == 'Web') {
         // console.log ('platform web');
         var message =
-          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br/><br/> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -292,7 +297,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<h4>Hi <b>' +
+          '<pre><h4>Hi <b>' +
             config.user_details.user_name +
             '</b> has asked the following query from ' +
             platform +
@@ -302,7 +307,7 @@ module.exports = function (intentRequest) {
             config.user_details.user_email +
             ' </b>or contact number :<b>' +
             config.user_details.user_contact +
-            '</b>',
+            '</b></pre>',
           'Iris User Query from ' + platform
         );
       });
@@ -567,7 +572,7 @@ module.exports = function (intentRequest) {
       if (platform == 'Web') {
         // console.log ('platform web');
         var message =
-          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br/><br/> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
       }
       if (config.is_send_ask == true) {
         let genericAttachments = [
@@ -614,12 +619,12 @@ module.exports = function (intentRequest) {
         }
         console.log ('platform web');
         var message =
-          'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
+          'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \n\nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
         if (platform == 'Web') {
           console.log ('platform web');
           var message =
-            '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+            '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours.<br/>  <br/>To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a><br/>  </div>';
         }
         var slack_msg =
           'Hi *' +
@@ -635,8 +640,9 @@ module.exports = function (intentRequest) {
           '*';
         sendSlackMsg (slack_msg, myResult => {
           console.log ('Slack message sent : ' + myResult);
+          console.log (query_form.user_query, 'userquery');
           var status = common.sendEmail (
-            '<h4>Hi <b>' +
+            '<pre><h4>Hi <b>' +
               query_form.user_name +
               '</b> has asked the following query from ' +
               platform +
@@ -646,7 +652,7 @@ module.exports = function (intentRequest) {
               query_form.user_email +
               ' </b>or contact number :<b>' +
               query_form.user_contact +
-              '</b>',
+              '</b> </pre>',
             'Iris User Query from ' + platform
           );
         });
@@ -738,7 +744,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div>Thank You. Have a great day! &#x1F60A .To start a new conversation say Hi</div>';
+          '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
@@ -755,12 +761,12 @@ module.exports = function (intentRequest) {
       }
 
       var message =
-        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
+        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \n\nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
         // console.log ('platform web');
         var message =
-          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br/><br/> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/> </div>';
       }
       let genericAttachments = [
         {

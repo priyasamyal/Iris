@@ -40,6 +40,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
+        '.' +
         '\n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
@@ -71,13 +72,14 @@ module.exports = function (intentRequest) {
         '\n Contact Day :' +
         config.user_details.user_day +
         '\n Contact Time : ' +
+        ' (IST, + 5.5 GMT)' +
         config.user_details.user_time +
         '\n User Type : ' +
         config.user_details.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          '<pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Project Discussion session from ' +
             platform +
@@ -97,8 +99,9 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
-          'Iris Project Discussion Request   ' + platform
+            config.user_details.user_time +
+            '</pre>',
+          +' (IST, + 5.5 GMT)' + 'Iris Project Discussion Request   ' + platform
         );
       });
       let genericAttachments = [
@@ -152,12 +155,12 @@ module.exports = function (intentRequest) {
         var platform = 'Web';
       }
       var message =
-        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
+        'Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. \n\nTo know more about Prologic Technologies, visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
         console.log ('platform web');
         var message =
-          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
+          '<div> Thank You so much. I have forwarded your query to the concerned person. Someone from our team will get back to you within 48 hours. <br/><br/> To know more about Prologic Technologies, visit  <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>  </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -174,7 +177,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<h4>Hi <b>' +
+          '<pre><h4>Hi <b>' +
             config.user_details.user_name +
             '</b> has asked the following query from ' +
             platform +
@@ -184,7 +187,7 @@ module.exports = function (intentRequest) {
             config.user_details.user_email +
             ' </b>or contact number :<b>' +
             config.user_details.user_contact +
-            '</b>',
+            '</b></pre>',
           'Iris User Query from ' + platform
         );
       });
@@ -238,6 +241,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
+        '.' +
         '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
@@ -247,7 +251,8 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
-          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
+          '.' +
+          '<br/><br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/>  </div>';
       }
 
       var slack_msg =
@@ -270,12 +275,13 @@ module.exports = function (intentRequest) {
         config.user_details.user_day +
         '\n Contact Time : ' +
         config.user_details.user_time +
+        ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         config.user_details.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          '<pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Consultation session from' +
             platform +
@@ -295,8 +301,11 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
-          'Iris Consultation session Request from ' + platform
+            config.user_details.user_time +
+            '</pre>',
+          +' (IST, + 5.5 GMT)' +
+            'Iris Consultation session Request from ' +
+            platform
         );
       });
       let genericAttachments = [
@@ -759,7 +768,7 @@ module.exports = function (intentRequest) {
                 buttons: show_days,
                 imageUrl: null,
                 subTitle: '...',
-                title: 'Choose a day.',
+                title: ' Please choose a day.',
               },
             ];
             return lexResponses.elicitSlot (
@@ -779,7 +788,7 @@ module.exports = function (intentRequest) {
                 is_complete: null,
               },
               'user_day',
-              'Best day to contact you',
+              'Best day to contact you.',
               genericAttachments
             );
           }
@@ -807,7 +816,7 @@ module.exports = function (intentRequest) {
               buttons: show_days,
               imageUrl: null,
               subTitle: '...',
-              title: 'Choose a day.',
+              title: 'Please choose a day.',
             },
           ];
           return lexResponses.elicitSlot (
@@ -827,7 +836,7 @@ module.exports = function (intentRequest) {
               is_complete: null,
             },
             'user_day',
-            'Best day to contact you',
+            'Best day to contact you.',
             genericAttachments
           );
         }
@@ -841,7 +850,7 @@ module.exports = function (intentRequest) {
       query_form.user_time == null
     ) {
       let message =
-        'May i know a convenient time slot for phone call on ' +
+        'May I know a convenient time slot for phone call on ' +
         query_form.user_day +
         '.';
       let genericAttachments = [
@@ -864,7 +873,7 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Indian Standard Time, +5.5 GMT',
+          title: '(Indian Standard Time, +5.5 GMT)',
         },
       ];
       return lexResponses.elicitSlot (
@@ -939,7 +948,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
-        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
+        '\n\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
         // console.log ('platform web');
@@ -948,7 +957,7 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
-          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
+          '<br/><br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/>   </div>';
       }
 
       var slack_msg =
@@ -971,12 +980,13 @@ module.exports = function (intentRequest) {
         query_form.user_day +
         '\n Contact Time : ' +
         query_form.user_time +
+        ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         query_form.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          '<pre> <span>Hi <b>' +
             query_form.user_name +
             '</b> has booked a Consultation session from' +
             platform +
@@ -996,8 +1006,11 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             query_form.user_day +
             '<br> Contact Time : ' +
-            query_form.user_time,
-          'Iris Consultation session Request from ' + platform
+            query_form.user_time +
+            '</pre>',
+          +' (IST, + 5.5 GMT)' +
+            'Iris Consultation session Request from ' +
+            platform
         );
       });
       let genericAttachments = [
@@ -1094,7 +1107,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div>Thank You. Have a great day! &#x1F60A.To start a new conversation say Hi</div>';
+          '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
@@ -1116,7 +1129,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
-        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
+        '\n\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/';
 
       if (platform == 'Web') {
         // console.log ('platform web');
@@ -1125,7 +1138,8 @@ module.exports = function (intentRequest) {
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
-          '<br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a>    </div>';
+          '.' +
+          '<br/><br/>To know more about Prologic Technologies visit <a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/>   </div>';
       }
       let genericAttachments = [
         {

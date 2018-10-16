@@ -55,12 +55,13 @@ module.exports = function (intentRequest) {
         config.user_details.user_day +
         '\n Contact Time : ' +
         config.user_details.user_time +
+        ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         config.user_details.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          ' <pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Consultation session. His/Her details are given below:</span> <br>' +
             platform +
@@ -80,7 +81,9 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
+            config.user_details.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Consultation session Request from ' + platform
         );
       });
@@ -151,7 +154,7 @@ module.exports = function (intentRequest) {
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<h4>Hi <b>' +
+          '<pre> <h4>Hi <b>' +
             config.user_details.user_name +
             '</b> has asked the following query from ' +
             platform +
@@ -161,7 +164,7 @@ module.exports = function (intentRequest) {
             config.user_details.user_email +
             ' </b>or contact number :<b>' +
             config.user_details.user_contact +
-            '</b>',
+            '</b> </pre>',
           'Iris User Query from ' + platform
         );
       });
@@ -215,6 +218,7 @@ module.exports = function (intentRequest) {
         config.user_details.user_time +
         ' (IST, + 5.5 GMT) on ' +
         config.user_details.user_day +
+        '.' +
         '\n For more queries you may send a mail to business@prologictechnologies.in';
 
       if (platform == 'Web') {
@@ -225,7 +229,7 @@ module.exports = function (intentRequest) {
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
           '.' +
-          ' <br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a>  </div>';
+          ' <br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a> <br/> </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -247,12 +251,13 @@ module.exports = function (intentRequest) {
         config.user_details.user_day +
         '\n Contact Time : ' +
         config.user_details.user_time +
+        ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         config.user_details.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          ' <pre> <span>Hi <b>' +
             config.user_details.user_name +
             '</b> has booked a Project Discussion session from ' +
             platform +
@@ -272,7 +277,9 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             config.user_details.user_day +
             '<br> Contact Time : ' +
-            config.user_details.user_time,
+            config.user_details.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Project Discussion Request   ' + platform
         );
       });
@@ -694,7 +701,7 @@ module.exports = function (intentRequest) {
                 buttons: show_days,
                 imageUrl: null,
                 subTitle: '...',
-                title: 'Choose a day.',
+                title: 'Please choose a day.',
               },
             ];
             return lexResponses.elicitSlot (
@@ -713,7 +720,7 @@ module.exports = function (intentRequest) {
                 is_complete: null,
               },
               'user_day',
-              'Best day to contact you',
+              'Best day to contact you.',
               genericAttachments
             );
           }
@@ -741,7 +748,7 @@ module.exports = function (intentRequest) {
               buttons: show_days,
               imageUrl: null,
               subTitle: '...',
-              title: 'Choose a day.',
+              title: 'Please choose a day.',
             },
           ];
           return lexResponses.elicitSlot (
@@ -760,7 +767,7 @@ module.exports = function (intentRequest) {
               is_complete: null,
             },
             'user_day',
-            'Best day to contact you',
+            'Best day to contact you.',
             genericAttachments
           );
         }
@@ -784,7 +791,7 @@ module.exports = function (intentRequest) {
         // console.log ('abu');
       }
       let message =
-        'May i know a convenient time slot for phone call on ' +
+        'May I know a convenient time slot for phone call on ' +
         query_form.user_day +
         '.';
       let genericAttachments = [
@@ -807,7 +814,7 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Indian Standard Time, +5.5 GMT',
+          title: '(Indian Standard Time, +5.5 GMT)',
         },
       ];
       return lexResponses.elicitSlot (
@@ -880,7 +887,8 @@ module.exports = function (intentRequest) {
         query_form.user_time +
         ' (IST, + 5.5 GMT) on ' +
         query_form.user_day +
-        '\n For more queries you may send a mail to business@prologictechnologies.in';
+        '.' +
+        ' \n\n For more queries you may send a mail to business@prologictechnologies.in\n';
 
       if (platform == 'Web') {
         // console.log ('platform web');
@@ -890,7 +898,7 @@ module.exports = function (intentRequest) {
           ' (IST, + 5.5 GMT) on ' +
           config.user_details.user_day +
           '.' +
-          ' <br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a>  </div>';
+          ' <br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a><br/>  </div>';
       }
       var slack_msg =
         'Hi *' +
@@ -912,12 +920,13 @@ module.exports = function (intentRequest) {
         query_form.user_day +
         '\n Contact Time : ' +
         query_form.user_time +
+        +' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         query_form.userr_type;
       sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail (
-          '<span>Hi <b>' +
+          ' <pre> <span>Hi <b>' +
             query_form.user_name +
             '</b> has booked a Project Discussion session from ' +
             platform +
@@ -937,7 +946,9 @@ module.exports = function (intentRequest) {
             '<br> Contact Day : ' +
             query_form.user_day +
             '<br> Contact Time : ' +
-            query_form.user_time,
+            query_form.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Project Discussion Request From' + platform
         );
       });
@@ -1062,7 +1073,7 @@ module.exports = function (intentRequest) {
             query_form.user_time +
             ' (IST, + 5.5 GMT) on ' +
             query_form.user_day +
-            '<br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a>  </div>',
+            '<br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a> <br/> </div>',
           genericAttachments
         );
       }
@@ -1084,7 +1095,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div>Thank You. Have a great day! &#x1F60A.To start a new conversation say Hi</div>';
+          '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,

@@ -18,11 +18,11 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Discuss Project/Idea',
+              text: 'Discuss Project/Idea?',
               value: 'Discuss Project/Idea',
             },
             {
-              text: 'Book a Consultation ',
+              text: 'Book a Consultation? ',
               value: 'Book a consultation ',
             },
           ],
@@ -36,7 +36,7 @@ module.exports = function (intentRequest) {
         'BusinessQuery',
         {bus_query: null},
         'bus_query',
-        "I'm sure i can help you with this",
+        "I'm sure I can help you with this.",
         genericAttachments
       );
     }
@@ -67,7 +67,7 @@ module.exports = function (intentRequest) {
       intentRequest.currentIntent.slots.bus_query == 'Book a consultation '
     ) {
       let message =
-        'Wow! I am excited. Our experts are here to help. \nMay i know your name?';
+        'Wow! I am excited. Our experts are here to help. \nMay I know your name?';
       return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'ConsultIntent',

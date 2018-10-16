@@ -709,11 +709,11 @@ module.exports = function (intentRequest) {
             intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
           ) {
             var msg =
-              'Thank You so much :slightly_smiling_face: . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
+              'Thank You so much :slightly_smiling_face: . I have processed your application. You will hear from us in 48 hours. \n\nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
           }
         } else {
           var msg =
-            '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
+            '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours.<br/> <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> <br/></div>  ';
         }
 
         return lexResponses.elicitSlot (
@@ -789,7 +789,7 @@ module.exports = function (intentRequest) {
         }
       } else {
         var msg =
-          '<div>Thank You. Have a great day! &#x1F60A.To start a new conversation say Hi</div>';
+          '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
       return lexResponses.close (
         intentRequest.sessionAttributes,
@@ -824,18 +824,18 @@ module.exports = function (intentRequest) {
         },
       ];
       var msg =
-        'Thank You so much :) . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
+        'Thank You so much :) . I have processed your application. You will hear from us in 48 hours. \n\nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
       // check for various platform for smiley
       if (intentRequest.requestAttributes != null) {
         if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
         ) {
           var msg =
-            'Thank You so much :slightly_smiling_face: . I have processed your application. You will hear from us in 48 hours. \nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
+            'Thank You so much :slightly_smiling_face: . I have processed your application. You will hear from us in 48 hours. \n\nTo know more about our work culture visit https://www.prologic-technologies.com/prologic-work-culture/';
         }
       } else {
         var msg =
-          '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours. <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> </div>';
+          '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours. <br/><br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> <br/> </div>';
       }
 
       return lexResponses.elicitSlot (
