@@ -1,36 +1,39 @@
 'use strict';
 
-const lexResponses = require ('../lexResponses');
-const request = require ('request');
+const lexResponses = require('../lexResponses');
+const request = require('request');
 
-const config = require ('../lib/send_email.js');
-const common = require ('../lib/send_email');
+const config = require('../lib/send_email.js');
+const common = require('../lib/send_email');
 module.exports = function (intentRequest) {
-  console.log (
+  console.log(
     'intentRequest applyNowHandle  called ..' +
-      '' +
-      JSON.stringify (intentRequest)
+    '' +
+    JSON.stringify(intentRequest)
   );
   const source = intentRequest.invocationSource;
   var query_form = intentRequest.currentIntent.slots;
+  console.log(query_form, "query_form", config.name_filled);
   var mail;
   // console.log (query_form.user_name, 'form value', query_form);
   // value of email in slack
-  if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
-    mail = intentRequest.inputTranscript.split ('|');
-    mail = mail[1].split ('>');
+  if (intentRequest.inputTranscript.indexOf('<mailto:') !== -1) {
+    mail = intentRequest.inputTranscript.split('|');
+    mail = mail[1].split('>');
     query_form.user_email = mail[0];
     // console.log (mail, 'split perform', query_form);
   }
+
   if (source === 'DialogCodeHook') {
     // console.log ('ll');
     // console.log (config.name_filled, 'config.name');
     // console.log (query_form.user_name, 'username');
     // console.log (intentRequest.inputTranscript, 'transcript');
-    if (query_form.user_name == null) {
-      // console.log ('name1');
-      query_form.user_name = intentRequest.inputTranscript;
-    }
+    // if (query_form.user_name == null) {
+    //   // console.log ('name1');
+    //   query_form.user_name = intentRequest.inputTranscript;
+    // }
+    //  console.log(query_form, "query_form");
     if (
       query_form.user_name == null &&
       query_form.user_email == null &&
@@ -40,14 +43,45 @@ module.exports = function (intentRequest) {
       query_form.user_vacancy == null &&
       config.name_filled == false
     ) {
-      // console.log (config.name_filled, 'namefiller');
+      console.log(config.name_filled, 'namefiller7');
 
       // console.log ('email34');
       // console.log (config.name_filled, 'namefiller');
-
+      config.name_filled = true;
+      console.log(config.name_filled, 'namefiller7again');
       let message =
-        'Sure, I can help you process your application right now. Please enter your name.';
-      return lexResponses.elicitSlotWithoutCard (
+        'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
+      return lexResponses.elicitSlotWithoutCard(
+        intentRequest.sessionAttributes,
+        'ApplyNow',
+        {
+          user_email: null,
+          user_experience: null,
+          user_name: null,
+          user_phone: null,
+          user_qualification: null,
+          user_vacancy: null,
+          is_complete: null,
+        },
+        'user_name',
+        message
+      );
+      // for checking apply in name(as .1 % of the total population might have name whic contains apply)
+    }
+    else if (
+      query_form.user_name == null &&
+      query_form.user_email == null &&
+      query_form.user_phone == null &&
+      query_form.user_qualification == null &&
+      query_form.user_experience == null &&
+      query_form.user_vacancy == null &&
+      query_form.is_complete == null
+    ) {
+      config.name_filled = true;
+      console.log("come");
+      let message =
+        'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -72,17 +106,17 @@ module.exports = function (intentRequest) {
       query_form.user_vacancy == null &&
       config.name_filled == true
     ) {
-      // console.log (config.name_filled, 'namefiller');
+      console.log(config.name_filled, 'namefiller');
       // console.log ('email1');
       // validation for name
       var namePattern = /^[A-Za-z ]+$/;
-      var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
+      var nameVAlidation = namePattern.test(intentRequest.inputTranscript);
 
-      // console.log ('ram');
+      console.log('ram', nameVAlidation);
       if (!nameVAlidation) {
         let message =
-          'Sure, I can help you process your application right now. Please enter your name.';
-        return lexResponses.elicitSlotWithoutCard (
+          'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
+        return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -98,7 +132,7 @@ module.exports = function (intentRequest) {
           message
         );
       } else {
-        return lexResponses.elicitSlotWithoutCard (
+        return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -111,7 +145,7 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_email',
-          'Can I have your email address please?'
+          'Okay ' + query_form.user_name + ', Can I have your email address?'
         );
       }
     } else if (
@@ -126,7 +160,7 @@ module.exports = function (intentRequest) {
       // console.log ('email1');
       var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
       // console.log (mail, 'mailmail');
-      var emailValidation = emailPattern.test (query_form.user_email);
+      var emailValidation = emailPattern.test(query_form.user_email);
       // if (intentRequest.requestAttributes != null) {
       //   if (mail) {
       //     if (
@@ -147,7 +181,7 @@ module.exports = function (intentRequest) {
 
       if (!emailValidation) {
         // console.log ('vap');
-        return lexResponses.elicitSlotWithoutCard (
+        return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -160,11 +194,11 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_email',
-          'Can I have your email address please?'
+          'Okay ' + query_form.user_name + ', Can I have your email address?'
         );
       } else {
         // console.log ('phone field');
-        return lexResponses.elicitSlotWithoutCard (
+        return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -177,7 +211,7 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_phone',
-          'Also your phone number please?'
+          "I'd like to have your phone number. It will help us to reach you out in future."
         );
       }
     } else if (
@@ -191,9 +225,9 @@ module.exports = function (intentRequest) {
       // console.log ('email3');
       // validation for phone number
       var phone_reg = /^\d{7,13}$/;
-      var phone_val = phone_reg.test (intentRequest.inputTranscript);
+      var phone_val = phone_reg.test(intentRequest.inputTranscript);
       if (!phone_val) {
-        return lexResponses.elicitSlotWithoutCard (
+        return lexResponses.elicitSlotWithoutCard(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -206,7 +240,7 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_phone',
-          'Also your phone number please?'
+          "I'd like to have your phone number. It will help us to reach you out in future."
         );
       } else {
         //check for facebook slot value
@@ -218,7 +252,7 @@ module.exports = function (intentRequest) {
             // console.log (intentRequest.inputTranscript, 'blahblah');
 
             // console.log (query_form.user_qualification);
-            return lexResponses.elicitSlotWithoutCard (
+            return lexResponses.elicitSlotWithoutCard(
               intentRequest.sessionAttributes,
               'ApplyNow',
               {
@@ -266,7 +300,7 @@ module.exports = function (intentRequest) {
                 title: 'Please choose one',
               },
             ];
-            return lexResponses.elicitSlot (
+            return lexResponses.elicitSlot(
               intentRequest.sessionAttributes,
               'ApplyNow',
               {
@@ -316,7 +350,7 @@ module.exports = function (intentRequest) {
               title: 'Please choose one ',
             },
           ];
-          return lexResponses.elicitSlot (
+          return lexResponses.elicitSlot(
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -380,7 +414,7 @@ module.exports = function (intentRequest) {
           title: 'Please choose one',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -431,7 +465,7 @@ module.exports = function (intentRequest) {
             title: 'Please choose one',
           },
         ];
-        return lexResponses.elicitSlot (
+        return lexResponses.elicitSlot(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -454,7 +488,7 @@ module.exports = function (intentRequest) {
             intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
             'Facebook'
           ) {
-            return lexResponses.elicitSlotWithoutCard (
+            return lexResponses.elicitSlotWithoutCard(
               intentRequest.sessionAttributes,
               'ApplyNow',
               {
@@ -500,7 +534,7 @@ module.exports = function (intentRequest) {
                 title: 'Please choose one',
               },
             ];
-            return lexResponses.elicitSlot (
+            return lexResponses.elicitSlot(
               intentRequest.sessionAttributes,
               'ApplyNow',
               {
@@ -548,7 +582,7 @@ module.exports = function (intentRequest) {
               title: 'Please choose one',
             },
           ];
-          return lexResponses.elicitSlot (
+          return lexResponses.elicitSlot(
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -587,13 +621,13 @@ module.exports = function (intentRequest) {
         intentRequest.inputTranscript == 'BCA'
         //check for repeating values when wrong
       ) {
-        console.log ('vacancy');
+        console.log('vacancy');
         if (intentRequest.requestAttributes != null) {
           if (
             intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
             'Facebook'
           ) {
-            return lexResponses.elicitSlotWithoutCard (
+            return lexResponses.elicitSlotWithoutCard(
               intentRequest.sessionAttributes,
               'ApplyNow',
               {
@@ -641,7 +675,7 @@ module.exports = function (intentRequest) {
               title: 'Please choose one',
             },
           ];
-          return lexResponses.elicitSlot (
+          return lexResponses.elicitSlot(
             intentRequest.sessionAttributes,
             'ApplyNow',
             {
@@ -679,8 +713,8 @@ module.exports = function (intentRequest) {
         } else {
           var platform = 'Web';
         }
-        sendSlackMsg (query_form, platform, myResult => {
-          console.log ('Slack message sent : ' + myResult);
+        sendSlackMsg(query_form, platform, myResult => {
+          console.log('Slack message sent : ' + myResult);
         });
         config.is_send_apply = true;
         let genericAttachments = [
@@ -716,7 +750,7 @@ module.exports = function (intentRequest) {
             '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours.<br/> <br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> <br/></div>  ';
         }
 
-        return lexResponses.elicitSlot (
+        return lexResponses.elicitSlot(
           intentRequest.sessionAttributes,
           'ApplyNow',
           {
@@ -740,32 +774,51 @@ module.exports = function (intentRequest) {
       query_form.user_qualification != null &&
       query_form.user_experience != null &&
       query_form.user_vacancy != null &&
-      query_form.is_complete.toUpperCase () == 'YES'
+      query_form.is_complete.toUpperCase() == 'YES'
     ) {
       // console.log (query_form.is_complete, 'iscomplete');
       config.is_send_apply = false;
       let genericAttachments = [
         {
           attachmentLinkUrl: null,
+          // buttons: [
+          //   {
+          //     text: 'General Enquiry?',
+          //     value: 'General Enquiry',
+          //   },
+          //   {
+          //     text: 'Business Enquiry?',
+          //     value: 'Business Enquiry',
+          //   },
+          // ],
           buttons: [
             {
-              text: 'General Enquiry?',
-              value: 'General Enquiry',
+              text: 'Join Prologic Team',
+              value: 'Join Prologic Team',
             },
             {
-              text: 'Business Enquiry?',
-              value: 'Business Enquiry',
+              text: 'What we offer?',
+              value: 'What we offer',
+            },
+            {
+              text: 'Discuss Project/Idea?',
+              value: 'Discuss Project/Idea',
+            },
+            {
+              text: 'Book a Consultation?',
+              value: 'Book a consultation',
             },
           ],
+
           imageUrl: null,
           subTitle: '...',
           title: 'Do you have a',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'Greeting',
-        {query: null},
+        { query: null },
         'query',
         'Okay, How can i help you?',
         genericAttachments
@@ -777,7 +830,7 @@ module.exports = function (intentRequest) {
       query_form.user_qualification != null &&
       query_form.user_experience != null &&
       query_form.user_vacancy != null &&
-      query_form.is_complete.toUpperCase () == 'NO' // converting input value to uppercase
+      query_form.is_complete.toUpperCase() == 'NO' // converting input value to uppercase
     ) {
       config.is_send_apply = false;
       var msg = 'Thank You. Have a great day! :)';
@@ -791,7 +844,7 @@ module.exports = function (intentRequest) {
         var msg =
           '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
-      return lexResponses.close (
+      return lexResponses.close(
         intentRequest.sessionAttributes,
         'Fulfilled',
         msg
@@ -838,7 +891,7 @@ module.exports = function (intentRequest) {
           '<div> Thank You so much &#x1F60A . I have processed your application. You will hear from us in 48 hours. <br/><br/> To know more about our work culture visit <a href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a> <br/> </div>';
       }
 
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'ApplyNow',
         {
@@ -861,8 +914,8 @@ module.exports = function (intentRequest) {
   }
 };
 // slack message
-var https = require ('https');
-function sendSlackMsg (query_form, source, callback) {
+var https = require('https');
+function sendSlackMsg(query_form, source, callback) {
   var post_data = {
     text: 'Hi *' +
       query_form.user_name +
@@ -886,38 +939,38 @@ function sendSlackMsg (query_form, source, callback) {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength (JSON.stringify (post_data)),
+      'Content-Length': Buffer.byteLength(JSON.stringify(post_data)),
     },
   };
 
-  var status = common.sendEmail (
+  var status = common.sendEmail(
     '<p> Hi <b>' +
-      query_form.user_name +
-      '</b> has applied for the job. His/Her details are given below :</p> ' +
-      " Applicant's e-mail Id: " +
-      query_form.user_email +
-      "<br> Applicant's contact number: " +
-      query_form.user_phone +
-      '<br> Qualification: ' +
-      query_form.user_qualification +
-      '<br>Job Experience (in years): ' +
-      query_form.user_experience +
-      '<br> Job Profile: ' +
-      query_form.user_vacancy,
+    query_form.user_name +
+    '</b> has applied for the job. His/Her details are given below :</p> ' +
+    " Applicant's e-mail Id: " +
+    query_form.user_email +
+    "<br> Applicant's contact number: " +
+    query_form.user_phone +
+    '<br> Qualification: ' +
+    query_form.user_qualification +
+    '<br>Job Experience (in years): ' +
+    query_form.user_experience +
+    '<br> Job Profile: ' +
+    query_form.user_vacancy,
     'Iris Job Application from ' + source
   );
   // console.log (status, 'status');
 
-  var post_req = https.request (post_options, res => {
-    res.setEncoding ('utf8');
+  var post_req = https.request(post_options, res => {
+    res.setEncoding('utf8');
     var returnData = '';
-    res.on ('data', chunk => {
+    res.on('data', chunk => {
       returnData += chunk;
     });
-    res.on ('end', () => {
-      callback ('Success');
+    res.on('end', () => {
+      callback('Success');
     });
   });
-  post_req.write (JSON.stringify (post_data));
-  post_req.end ();
+  post_req.write(JSON.stringify(post_data));
+  post_req.end();
 }

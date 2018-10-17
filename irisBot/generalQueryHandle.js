@@ -1,7 +1,7 @@
 'use strict';
 
-const lexResponses = require ('../lexResponses');
-const config = require ('../lib/send_email.js');
+const lexResponses = require('../lexResponses');
+const config = require('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
   // console.log (
@@ -35,10 +35,10 @@ module.exports = function (intentRequest) {
           title: 'Do you have a ',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'UserQuery',
-        {query_gen: 'Service Query', is_complete: null},
+        { query_gen: 'Service Query', is_complete: null },
         'query_gen',
         'Okay, Can you please be specific?',
         genericAttachments
@@ -54,10 +54,10 @@ module.exports = function (intentRequest) {
       // different message for different platforms so they can be html rendered
       if (intentRequest.requestAttributes != null) {
         var message =
-          'We are a Specialized Digital Agency with expertise in: \n1. IT Consulting \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. Web And Mobile Engineering \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. Mobile Website Designs \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. Healthcare Solutions \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \n\nFor more details, you can visit https://www.prologic-technologies.com/';
+          'We are a Specialized Digital Agency with expertise in: \n1. IT Consulting \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. Web And Mobile Engineering \n\tCustom Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. UI UX Designs \n\tResponsive UI Designs\n\tSimplified User Experience\n4. Telemedicine Solutions \n\tCustom Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \n\nFor more details, you can visit https://www.prologic-technologies.com/ \n\n Still have some doubts? Ask from our experts.';
       } else {
         var message =
-          '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Bespoke Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. Mobile Website Designs</h2> <ul> <li>Responsive UI Designs</li><li>Enhanced User Experience</li></ul></div><div class="services_list"><h2>4. Healthcare Solutions</h2><ul><li>Bespoke Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul><br/> </div><div class="services_list"><p><br/>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/></div> </div> </div>';
+          '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Custom Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. UI UX Designs</h2> <ul> <li>Responsive UI Designs</li><li>Simplified User Experience</li></ul></div><div class="services_list"><h2>4. Telemedicine Solutions</h2><ul><li>Custom Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul><br/> </div><div class="services_list"><p><br/>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/></div> </div> <p>Still have some doubts? Ask from our experts.<br><br> </p></div>';
       }
       // }
 
@@ -76,21 +76,21 @@ module.exports = function (intentRequest) {
           ],
           imageUrl: null,
           subTitle: '...',
-          title: 'Anything else I can help you with? ',
+          title: 'Want to ask any query? ',
         },
       ];
 
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'UserQuery',
-        {query_gen: 'Service Query', is_complete: null},
+        { query_gen: 'Service Query', is_complete: null },
         'is_complete',
         message,
         genericAttachments
       );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'YES'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase() == 'YES'
     ) {
       config.is_send_ourservices = false;
       let genericAttachments = [
@@ -98,12 +98,20 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'General Enquiry',
-              value: 'General Enquiry',
+              text: 'Join Prologic Team',
+              value: 'Join Prologic Team',
             },
             {
-              text: 'Business Enquiry',
-              value: 'Business Enquiry',
+              text: 'What we offer?',
+              value: 'What we offer',
+            },
+            {
+              text: 'Discuss Project/Idea?',
+              value: 'Discuss Project/Idea',
+            },
+            {
+              text: 'Book a Consultation?',
+              value: 'Book a consultation',
             },
           ],
           imageUrl: null,
@@ -111,17 +119,44 @@ module.exports = function (intentRequest) {
           title: 'Please choose one',
         },
       ];
-      return lexResponses.elicitSlot (
+      var message =
+        ' I am happy to help :) and would need some details. Can I have your name, please?';
+      if (intentRequest.requestAttributes != null) {
+        if (
+          intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
+        ) {
+          var message =
+            'I am happy to help :slightly_smiling_face: and would need some details. Can I have your name, please?';
+        }
+      } else {
+        var message =
+          '<div> I am happy to help &#x1F60A and would need some details. Can I have your name, please?</div>';
+      }
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
-        'Greeting',
-        {query: null},
-        'query',
-        'Okay, How can i help you?',
-        genericAttachments
+        'AskQuery',
+        {
+          user_contact: null,
+          user_email: null,
+          user_name: null,
+          user_query: null,
+          is_complete: null,
+        },
+        'user_name',
+        message
       );
+
+      // return lexResponses.elicitSlot(
+      //   intentRequest.sessionAttributes,
+      //   'Greeting',
+      //   { query: null },
+      //   'query',
+      //   'Okay, How can i help you?',
+      //   genericAttachments
+      // );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'NO'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase() == 'NO'
     ) {
       config.is_send_ourservices = false;
       var msg = 'Thank You. Have a great day! :)';
@@ -135,7 +170,7 @@ module.exports = function (intentRequest) {
         var msg =
           '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
-      return lexResponses.close (
+      return lexResponses.close(
         intentRequest.sessionAttributes,
         'Fulfilled',
         msg
@@ -159,10 +194,10 @@ module.exports = function (intentRequest) {
           title: 'You may apply now or choose to learn more about Prologic Technologies.',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'CareerQuery',
-        {career: null},
+        { career: null },
         'career',
         'Great! Do you wish to join our vibrant team?',
         genericAttachments
@@ -178,12 +213,12 @@ module.exports = function (intentRequest) {
         var platform = 'Web';
       }
       var message =
-        'We are a Specialized Digital Agency with expertise in: \n1. IT Consulting \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. Web And Mobile Engineering \n\tBespoke Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. Mobile Website Designs \n\tResponsive UI Designs\n\tEnhanced User Experience\n4. Healthcare Solutions \n\tBespoke Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \n\nFor more details, you can visit https://www.prologic-technologies.com/';
+        'We are a Specialized Digital Agency with expertise in: \n1. IT Consulting \n\tTelemedicine Solutions\n\tWeb Engineering\n\tMobilty Solutions\n\tUI/ UX Services\n2. Web And Mobile Engineering \n\tCustom Web Development\n\tHybrid And Native Mobile Apps\n\tWebRTC Solutions Using Tokbox\n\tSocial Commerce\n\tPayment Gateway Integration\n3. UI UX Designs \n\tResponsive UI Designs\n\tSimplified User Experience\n4. Telemedicine Solutions \n\tCustom Telemedicine Platforms\n\tCustom TeleNutrition Solutions\n\tFitness And Wellness Applications \n\nFor more details, you can visit https://www.prologic-technologies.com/ \n\n Still have some doubts? Ask from our experts.';
       if (platform == 'Web') {
         // console.log ('webwebweb');
 
         var message =
-          '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Bespoke Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. Mobile Website Designs</h2> <ul> <li>Responsive UI Designs</li><li>Enhanced User Experience</li></ul></div><div class="services_list"><h2>4. Healthcare Solutions</h2><ul><li>Bespoke Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul><br/> </div><div class="services_list"><p><br/>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/></div> </div> </div>';
+          '<div><div class="services_list"> <h2> We are a Specialized Digital Agency with expertise in: </h2 >  <h2>1. IT Consulting </h2><ul><li>Telemedicine Solutions </li> <li>Web Engineering</li> <li>Mobilty Solutions</li><li>UI/ UX Services.</li> </ul></div ><div class="services_list"> <h2>2. Web And Mobile Engineering</h2><ul> <li>Custom Web Development</li><li>Hybrid And Native Mobile Apps</li> <li>WebRTC Solutions Using Tokbox</li> <li>Social Commerce</li> <li>Payment Gateway Integration</li> </ul></div> <div class="services_list"><h2>3. UI UX Designs</h2> <ul> <li>Responsive UI Designs</li><li>Simplified User Experience</li></ul></div><div class="services_list"><h2>4. Telemedicine Solutions</h2><ul><li>Custom Telemedicine Platforms</li> <li>Custom TeleNutrition Solutions</li> <li>Fitness And Wellness Applications</li> </ul><br/> </div><div class="services_list"><p><br/>For more details, you can visit</p><div class="link"><a href="https://www.prologic-technologies.com/" target="_blank"> https://www.prologic-technologies.com/ </a> <br/></div> </div> <p>Still have some doubts? Ask any query from our experts.<br><br></p></div>';
       }
 
       let genericAttachments = [
@@ -205,10 +240,10 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'UserQuery',
-        {query_gen: 'Service Query', is_complete: null},
+        { query_gen: 'Service Query', is_complete: null },
         'is_complete',
         message,
         genericAttachments
