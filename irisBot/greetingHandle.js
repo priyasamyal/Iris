@@ -362,8 +362,8 @@ module.exports = function (intentRequest) {
               value: 'What we offer',
             },
             {
-              text: 'Discuss Project/Idea?',
-              value: 'Discuss Project/Idea',
+              text: 'Discuss Project or Idea',
+              value: 'Discuss Project or Idea',
             },
             {
               text: 'Book a Consultation?',
@@ -383,8 +383,7 @@ module.exports = function (intentRequest) {
         message,
         genericAttachments
       );
-    }
-    else if (intentRequest.currentIntent.slots.query == 'Apply Now') {
+    } else if (intentRequest.currentIntent.slots.query == 'Apply Now') {
       config.name_filled = true;
       let message =
         'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
@@ -403,8 +402,7 @@ module.exports = function (intentRequest) {
         'user_name',
         message
       );
-    }
-    else {
+    } else {
       if (intentRequest.currentIntent.slots.query == 'Business Query') {
         // console.log ('Business Query selected');
 
@@ -413,8 +411,8 @@ module.exports = function (intentRequest) {
             attachmentLinkUrl: null,
             buttons: [
               {
-                text: 'Discuss Project/Idea?',
-                value: 'Discuss Project/Idea',
+                text: 'Discuss Project or Idea?',
+                value: 'Discuss Project or Idea',
               },
               {
                 text: 'Book a Consultation?',

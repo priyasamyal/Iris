@@ -1,7 +1,7 @@
 'use strict';
 
-const lexResponses = require('../lexResponses');
-const config = require('../lib/send_email.js');
+const lexResponses = require ('../lexResponses');
+const config = require ('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
   // console.log (
@@ -35,10 +35,10 @@ module.exports = function (intentRequest) {
           title: 'Do you have a ',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'UserQuery',
-        { query_gen: 'Service Query', is_complete: null },
+        {query_gen: 'Service Query', is_complete: null},
         'query_gen',
         'Okay, Can you please be specific?',
         genericAttachments
@@ -80,17 +80,17 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'UserQuery',
-        { query_gen: 'Service Query', is_complete: null },
+        {query_gen: 'Service Query', is_complete: null},
         'is_complete',
         message,
         genericAttachments
       );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete.toUpperCase() == 'YES'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'YES'
     ) {
       config.is_send_ourservices = false;
       let genericAttachments = [
@@ -106,8 +106,8 @@ module.exports = function (intentRequest) {
               value: 'What we offer',
             },
             {
-              text: 'Discuss Project/Idea?',
-              value: 'Discuss Project/Idea',
+              text: 'Discuss Project or Idea',
+              value: 'Discuss Project or Idea',
             },
             {
               text: 'Book a Consultation?',
@@ -132,7 +132,7 @@ module.exports = function (intentRequest) {
         var message =
           '<div> I am happy to help &#x1F60A and would need some details. Can I have your name, please?</div>';
       }
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'AskQuery',
         {
@@ -156,7 +156,7 @@ module.exports = function (intentRequest) {
       // );
     } else if (
       intentRequest.currentIntent.slots.query_gen == 'Service Query' &&
-      intentRequest.currentIntent.slots.is_complete.toUpperCase() == 'NO'
+      intentRequest.currentIntent.slots.is_complete.toUpperCase () == 'NO'
     ) {
       config.is_send_ourservices = false;
       var msg = 'Thank You. Have a great day! :)';
@@ -170,7 +170,7 @@ module.exports = function (intentRequest) {
         var msg =
           '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
-      return lexResponses.close(
+      return lexResponses.close (
         intentRequest.sessionAttributes,
         'Fulfilled',
         msg
@@ -194,10 +194,10 @@ module.exports = function (intentRequest) {
           title: 'You may apply now or choose to learn more about Prologic Technologies.',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'CareerQuery',
-        { career: null },
+        {career: null},
         'career',
         'Great! Do you wish to join our vibrant team?',
         genericAttachments
@@ -240,10 +240,10 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'UserQuery',
-        { query_gen: 'Service Query', is_complete: null },
+        {query_gen: 'Service Query', is_complete: null},
         'is_complete',
         message,
         genericAttachments
