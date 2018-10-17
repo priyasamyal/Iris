@@ -18,8 +18,8 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Discuss Project/Idea?',
-              value: 'Discuss Project/Idea',
+              text: 'Discuss Project or Idea',
+              value: 'Discuss Project or Idea',
             },
             {
               text: 'Book a Consultation? ',
@@ -41,7 +41,9 @@ module.exports = function (intentRequest) {
       );
     }
 
-    if (intentRequest.currentIntent.slots.bus_query == 'Discuss Project/Idea') {
+    if (
+      intentRequest.currentIntent.slots.bus_query == 'Discuss Project or Idea'
+    ) {
       let message =
         'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name please?';
       return lexResponses.elicitSlotWithoutCard (
