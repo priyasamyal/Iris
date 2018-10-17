@@ -427,7 +427,7 @@ module.exports = function (intentRequest) {
           is_complete: null,
         },
         'user_experience',
-        'May I know your work experience? ',
+        'Okay, thats nice! Now tell me about your work experience. ',
         genericAttachments
       );
     } else if (
@@ -478,7 +478,7 @@ module.exports = function (intentRequest) {
             is_complete: null,
           },
           'user_experience',
-          'May I know your work experience? ',
+          'Okay, thats nice! Now tell me about your work experience. ',
           genericAttachments
         );
       } else {
