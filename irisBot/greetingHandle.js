@@ -354,20 +354,20 @@ module.exports = function (intentRequest) {
           // ],
           buttons: [
             {
-              text: 'Join Prologic Team',
-              value: 'Join Prologic Team',
+              text: 'Apply for Job',
+              value: 'Apply for Job',
             },
             {
-              text: 'What we offer?',
-              value: 'What we offer',
+              text: 'Our Service Areas',
+              value: 'Our Service Areas',
             },
             {
-              text: 'Discuss Project or Idea',
+              text: 'Discuss Project/Idea',
               value: 'Discuss Project or Idea',
             },
             {
-              text: 'Book a Consultation?',
-              value: 'Book a consultation',
+              text: 'Book a free consult',
+              value: 'Book a free consult',
             },
           ],
           imageUrl: null,
@@ -386,7 +386,7 @@ module.exports = function (intentRequest) {
     } else if (intentRequest.currentIntent.slots.query == 'Apply Now') {
       config.name_filled = true;
       let message =
-        'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
+        'Thanks for showing your interest in Prologic Technologies. To process your application, please enter your name.';
       return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'ApplyNow',
@@ -411,12 +411,12 @@ module.exports = function (intentRequest) {
             attachmentLinkUrl: null,
             buttons: [
               {
-                text: 'Discuss Project or Idea?',
+                text: 'Discuss Project/Idea',
                 value: 'Discuss Project or Idea',
               },
               {
-                text: 'Book a Consultation?',
-                value: 'Book a consultation',
+                text: 'Book a free consult',
+                value: 'Book a free consult',
               },
             ],
             imageUrl: null,

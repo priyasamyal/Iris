@@ -155,7 +155,7 @@ module.exports = function (intentRequest) {
     if (intentRequest.currentIntent.slots.career == 'Apply Now') {
       config.name_filled = true;
       let message =
-        'Thanks for showing your interest in Prologic technology. I can help you process your application right now. Please enter your name.';
+        'Thanks for showing your interest in Prologic Technologies. To process your application, please enter your name.';
       return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'ApplyNow',

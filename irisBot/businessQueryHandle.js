@@ -1,7 +1,7 @@
 'use strict';
 
-const lexResponses = require ('../lexResponses');
-const config = require ('../lib/send_email.js');
+const lexResponses = require('../lexResponses');
+const config = require('../lib/send_email.js');
 
 module.exports = function (intentRequest) {
   // console.log (
@@ -18,12 +18,12 @@ module.exports = function (intentRequest) {
           attachmentLinkUrl: null,
           buttons: [
             {
-              text: 'Discuss Project or Idea',
+              text: 'Discuss Project/Idea',
               value: 'Discuss Project or Idea',
             },
             {
-              text: 'Book a Consultation? ',
-              value: 'Book a consultation ',
+              text: 'Book a free consult ',
+              value: 'Book a free consult ',
             },
           ],
           imageUrl: null,
@@ -31,10 +31,10 @@ module.exports = function (intentRequest) {
           title: 'Would you like to',
         },
       ];
-      return lexResponses.elicitSlot (
+      return lexResponses.elicitSlot(
         intentRequest.sessionAttributes,
         'BusinessQuery',
-        {bus_query: null},
+        { bus_query: null },
         'bus_query',
         "I'm sure I can help you with this.",
         genericAttachments
@@ -45,8 +45,8 @@ module.exports = function (intentRequest) {
       intentRequest.currentIntent.slots.bus_query == 'Discuss Project or Idea'
     ) {
       let message =
-        'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name please?';
-      return lexResponses.elicitSlotWithoutCard (
+        'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name, please?';
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -66,11 +66,11 @@ module.exports = function (intentRequest) {
         message
       );
     } else if (
-      intentRequest.currentIntent.slots.bus_query == 'Book a consultation '
+      intentRequest.currentIntent.slots.bus_query == 'Book a free consult '
     ) {
       let message =
         'Wow! I am excited. Our experts are here to help. \nMay I know your name?';
-      return lexResponses.elicitSlotWithoutCard (
+      return lexResponses.elicitSlotWithoutCard(
         intentRequest.sessionAttributes,
         'ConsultIntent',
         {
