@@ -722,6 +722,9 @@ module.exports = function (intentRequest) {
         );
       } else {
         // code  for getting days and date
+        // code  for getting days and date
+        var startDate = new Date ();
+        var aryDates = GetDates (startDate, 7);
 
         // checks for platform for card values
         if (intentRequest.requestAttributes != null) {
@@ -749,10 +752,10 @@ module.exports = function (intentRequest) {
               'Best day to contact you'
             );
           } else {
-            // code  for getting days and date
-            var startDate = new Date ();
-            var aryDates = GetDates (startDate, 7);
-            console.log (aryDates, 'daysarray');
+            // // code  for getting days and date
+            // var startDate = new Date ();
+            // var aryDates = GetDates (startDate, 7);
+            // console.log (aryDates, 'daysarray');
             var all_days = [
               'Monday',
               'Tuesday',
@@ -801,6 +804,7 @@ module.exports = function (intentRequest) {
             );
           }
         } else {
+          console.log (aryDates, 'daysarray');
           var all_days = [
             'Monday',
             'Tuesday',
