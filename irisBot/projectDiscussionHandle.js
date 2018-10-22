@@ -1,9 +1,9 @@
 'use strict';
-const lexResponses = require('../lexResponses');
-const request = require('request');
+const lexResponses = require ('../lexResponses');
+const request = require ('request');
 
-const config = require('../lib/send_email.js');
-const common = require('../lib/send_email');
+const config = require ('../lib/send_email.js');
+const common = require ('../lib/send_email');
 module.exports = function (intentRequest) {
   // console.log (config.current_step);
 
@@ -17,10 +17,10 @@ module.exports = function (intentRequest) {
   var mail;
   //  updated code
   // console.log (query_form.user_name, 'form value', query_form);
-  if (intentRequest.inputTranscript.indexOf('<mailto:') !== -1) {
+  if (intentRequest.inputTranscript.indexOf ('<mailto:') !== -1) {
     //email for slack
-    mail = intentRequest.inputTranscript.split('|');
-    mail = mail[1].split('>');
+    mail = intentRequest.inputTranscript.split ('|');
+    mail = mail[1].split ('>');
     query_form.user_email = mail[0];
     // console.log (mail, 'split perform', query_form);
   }
@@ -58,38 +58,48 @@ module.exports = function (intentRequest) {
         ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         config.user_details.userr_type;
-      var status = common.sendInvite(
-        '<pre><span>Hi</span></pre>', 'priya@prologictechnologies.in', 'Test'
+      var status = common.sendInvite (
+        '<pre><span>Hi</span></pre>',
+        'priya@prologictechnologies.in',
+        'Test'
       );
-      var status = common.sendInvite(
-        '<span>Hi ' + config.user_details.user_name + ', <br> This is to inform you that, your appointment for free consultation session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Consultation Appointment with Prologic Technologies'
-      );
-      sendSlackMsg(slack_msg, myResult => {
-        // console.log ('Slack message sent : ' + myResult);
-        var status = common.sendEmail(
-          ' <pre> <span>Hi <b>' +
+      var status = common.sendInvite (
+        '<span>Hi ' +
           config.user_details.user_name +
-          '</b> has booked a Consultation session. His/Her details are given below:</span> <br>' +
-          platform +
-          '. His/Her details are given below:</span> <br>' +
-          ' E-mail Id : ' +
-          config.user_details.user_email +
-          '\<br> Contact number : ' +
-          config.user_details.user_phone +
-          '<br> Company Name : ' +
-          config.user_details.user_company +
-          '<br> User Type : ' +
-          config.user_details.userr_type +
-          '<br> Company Size : ' +
-          config.user_details.user_size +
-          '<br> Project Description : ' +
-          config.user_details.user_des +
-          '<br> Contact Day : ' +
+          ', <br> This is to inform you that, your appointment for free consultation session has been confirmed. You will receive a phone call from us on ' +
           config.user_details.user_day +
-          '<br> Contact Time : ' +
+          ' between ' +
           config.user_details.user_time +
-          ' (IST, + 5.5 GMT)' +
-          '</pre>',
+          ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ',
+        config.user_details.user_email,
+        'Consultation Appointment with Prologic Technologies'
+      );
+      sendSlackMsg (slack_msg, myResult => {
+        // console.log ('Slack message sent : ' + myResult);
+        var status = common.sendEmail (
+          ' <pre> <span>Hi <b>' +
+            config.user_details.user_name +
+            '</b> has booked a Consultation session. His/Her details are given below:</span> <br>' +
+            platform +
+            '. His/Her details are given below:</span> <br>' +
+            ' E-mail Id : ' +
+            config.user_details.user_email +
+            '\<br> Contact number : ' +
+            config.user_details.user_phone +
+            '<br> Company Name : ' +
+            config.user_details.user_company +
+            '<br> User Type : ' +
+            config.user_details.userr_type +
+            '<br> Company Size : ' +
+            config.user_details.user_size +
+            '<br> Project Description : ' +
+            config.user_details.user_des +
+            '<br> Contact Day : ' +
+            config.user_details.user_day +
+            '<br> Contact Time : ' +
+            config.user_details.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Consultation session Request from ' + platform
         );
       });
@@ -112,7 +122,7 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'ConsultIntent',
         {
@@ -129,10 +139,10 @@ module.exports = function (intentRequest) {
         },
         'is_complete',
         'I have booked your free 30 minutes consultation with our expert. We will call between ' +
-        config.user_details.user_time +
-        ' (IST, + 5.5 GMT) on ' +
-        config.user_details.user_day +
-        '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/',
+          config.user_details.user_time +
+          ' (IST, + 5.5 GMT) on ' +
+          config.user_details.user_day +
+          '\n To know more about Prologic Technologies visit https://www.prologic-technologies.com/',
         genericAttachments
       );
     } else if (config.current_step == 'askqueryIntent') {
@@ -157,23 +167,25 @@ module.exports = function (intentRequest) {
         '* or contact number :*' +
         config.user_details.user_contact +
         '*';
-      var status = common.sendInvite(
-        '<pre><span>Hi</span></pre>', 'priya@prologictechnologies.in', 'Test'
+      var status = common.sendInvite (
+        '<pre><span>Hi</span></pre>',
+        'priya@prologictechnologies.in',
+        'Test'
       );
-      sendSlackMsg(slack_msg, myResult => {
+      sendSlackMsg (slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
-        var status = common.sendEmail(
+        var status = common.sendEmail (
           '<pre> <h4>Hi <b>' +
-          config.user_details.user_name +
-          '</b> has asked the following query from ' +
-          platform +
-          ':</h4><br>' +
-          config.user_details.user_query +
-          ' .<br>Kindly respond back to his/her email id : <b>' +
-          config.user_details.user_email +
-          ' </b>or contact number :<b>' +
-          config.user_details.user_contact +
-          '</b> </pre>',
+            config.user_details.user_name +
+            '</b> has asked the following query from ' +
+            platform +
+            ':</h4><br>' +
+            config.user_details.user_query +
+            ' .<br>Kindly respond back to his/her email id : <b>' +
+            config.user_details.user_email +
+            ' </b>or contact number :<b>' +
+            config.user_details.user_contact +
+            '</b> </pre>',
           'Iris User Query from ' + platform
         );
       });
@@ -197,7 +209,7 @@ module.exports = function (intentRequest) {
         },
       ];
 
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'AskQuery',
         {
@@ -236,7 +248,7 @@ module.exports = function (intentRequest) {
           '<div> Thank you for sharing your Project/Idea. We will call you between ' +
           config.user_details.user_time +
           ' (IST, + 5.5 GMT) on ' +
-          config.user_details.user_day +
+          query_form.user_day +
           '.' +
           ' <br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a> <br/> </div>';
       }
@@ -257,41 +269,49 @@ module.exports = function (intentRequest) {
         '\n Project Description:' +
         config.user_details.user_des +
         '\n Contact Day :' +
-        config.user_details.user_day +
+        query_form.user_day +
         '\n Contact Time : ' +
         config.user_details.user_time +
         ' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         config.user_details.userr_type;
-      var status = common.sendInvite(
-        '<span>Hi ' + config.user_details.user_name + ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Project Discussion Appointment with Prologic Technologies'
-      );
-      sendSlackMsg(slack_msg, myResult => {
-        // console.log ('Slack message sent : ' + myResult);
-        var status = common.sendEmail(
-          ' <pre> <span>Hi <b>' +
+      var status = common.sendInvite (
+        '<span>Hi ' +
           config.user_details.user_name +
-          '</b> has booked a Project Discussion session from ' +
-          platform +
-          '. His/Her details are given below:</span> <br>' +
-          ' E-mail Id : ' +
-          config.user_details.user_email +
-          '\<br> Contact number : ' +
-          config.user_details.user_phone +
-          '<br> Company Name : ' +
-          config.user_details.user_company +
-          '<br> User Type : ' +
-          config.user_details.userr_type +
-          '<br> Company Size : ' +
-          config.user_details.company_size +
-          '<br> Project Description : ' +
-          config.user_details.user_des +
-          '<br> Contact Day : ' +
-          config.user_details.user_day +
-          '<br> Contact Time : ' +
+          ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' +
+          query_form.user_day +
+          ' between ' +
           config.user_details.user_time +
-          ' (IST, + 5.5 GMT)' +
-          '</pre>',
+          ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ',
+        config.user_details.user_email,
+        'Project Discussion Appointment with Prologic Technologies'
+      );
+      sendSlackMsg (slack_msg, myResult => {
+        // console.log ('Slack message sent : ' + myResult);
+        var status = common.sendEmail (
+          ' <pre> <span>Hi <b>' +
+            config.user_details.user_name +
+            '</b> has booked a Project Discussion session from ' +
+            platform +
+            '. His/Her details are given below:</span> <br>' +
+            ' E-mail Id : ' +
+            config.user_details.user_email +
+            '\<br> Contact number : ' +
+            config.user_details.user_phone +
+            '<br> Company Name : ' +
+            config.user_details.user_company +
+            '<br> User Type : ' +
+            config.user_details.userr_type +
+            '<br> Company Size : ' +
+            config.user_details.company_size +
+            '<br> Project Description : ' +
+            config.user_details.user_des +
+            '<br> Contact Day : ' +
+            query_form.user_day +
+            '<br> Contact Time : ' +
+            config.user_details.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Project Discussion Request   ' + platform
         );
       });
@@ -313,7 +333,7 @@ module.exports = function (intentRequest) {
           title: 'Anything else I can help you with? ',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -346,7 +366,7 @@ module.exports = function (intentRequest) {
     ) {
       let message =
         'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name, please?';
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -375,8 +395,8 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      let message = "What is the name of your company, please?";
-      return lexResponses.elicitSlotWithoutCard(
+      let message = 'What is the name of your company, please?';
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -406,12 +426,12 @@ module.exports = function (intentRequest) {
       query_form.user_time == null
     ) {
       var namePattern = /^[A-Za-z ]+$/;
-      var nameVAlidation = namePattern.test(intentRequest.inputTranscript);
+      var nameVAlidation = namePattern.test (intentRequest.inputTranscript);
       if (!nameVAlidation) {
         // console.log ('pologt');
         let message =
           'To process your request I would need some information.\nDo not worry, Your idea is 100% protected by our non-disclosure agreement.\n\nMay I know your name, please?';
-        return lexResponses.elicitSlotWithoutCard(
+        return lexResponses.elicitSlotWithoutCard (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -453,7 +473,7 @@ module.exports = function (intentRequest) {
             title: 'Are you?',
           },
         ];
-        return lexResponses.elicitSlot(
+        return lexResponses.elicitSlot (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -507,7 +527,7 @@ module.exports = function (intentRequest) {
           title: 'Please choose one',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -535,8 +555,9 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      let message = 'Okay ' + query_form.user_name + ', May I have your phone number?';
-      return lexResponses.elicitSlotWithoutCard(
+      let message =
+        'Okay ' + query_form.user_name + ', May I have your phone number?';
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -567,12 +588,13 @@ module.exports = function (intentRequest) {
       // console.log ('phone1');
       var phone_reg = /^\d{7,13}$/;
       // console.log ('phone2');
-      var phone_val = phone_reg.test(query_form.user_phone);
+      var phone_val = phone_reg.test (query_form.user_phone);
       // console.log ('phone3');
-      let message = 'Okay ' + query_form.user_name + ', May I have your phone number?';
+      let message =
+        'Okay ' + query_form.user_name + ', May I have your phone number?';
       if (!phone_val) {
         // console.log ('phone4');
-        return lexResponses.elicitSlotWithoutCard(
+        return lexResponses.elicitSlotWithoutCard (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -592,7 +614,7 @@ module.exports = function (intentRequest) {
         );
       } else {
         let message = 'And your email address please?';
-        return lexResponses.elicitSlotWithoutCard(
+        return lexResponses.elicitSlotWithoutCard (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -619,7 +641,30 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      // console.log ('email2');
+      //getting next seven days
+      var startDate = new Date ();
+      config.aryDates = GetDates (startDate, 7);
+      var splitArr;
+      config.daysArr = [];
+
+      for (var i = 0; i < config.aryDates.length; i++) {
+        splitArr = config.aryDates[i].split (' ');
+        console.log (splitArr, 'split');
+
+        // check for having only week days in array
+        if (
+          splitArr[0] == 'Monday' ||
+          splitArr[0] == 'Tuesday' ||
+          splitArr[0] == 'Wednesday' ||
+          splitArr[0] == 'Thursday' ||
+          splitArr[0] == 'Friday'
+        ) {
+          config.daysArr.push ({
+            text: dateSuffix (splitArr[1]) + ' of ' + splitArr[0],
+            value: splitArr[0],
+          });
+        }
+      }
       // email validation
       var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
       var contactno = /^\d+$/;
@@ -630,23 +675,23 @@ module.exports = function (intentRequest) {
           if (
             intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
           ) {
-            var emailValidation = emailPattern.test(mail[0]);
+            var emailValidation = emailPattern.test (mail[0]);
           }
         } else if (
           intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
           'Facebook'
         ) {
-          var emailValidation = emailPattern.test(
+          var emailValidation = emailPattern.test (
             intentRequest.inputTranscript
           );
         }
       } else {
-        var emailValidation = emailPattern.test(intentRequest.inputTranscript);
+        var emailValidation = emailPattern.test (intentRequest.inputTranscript);
       }
 
       let message = 'And your email address please?';
       if (!emailValidation) {
-        return lexResponses.elicitSlotWithoutCard(
+        return lexResponses.elicitSlotWithoutCard (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -670,7 +715,7 @@ module.exports = function (intentRequest) {
             intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
             'Facebook'
           ) {
-            return lexResponses.elicitSlotWithoutCard(
+            return lexResponses.elicitSlotWithoutCard (
               intentRequest.sessionAttributes,
               'DiscussIntent',
               {
@@ -697,26 +742,26 @@ module.exports = function (intentRequest) {
               'Friday',
             ];
             // check for day value
-            var d = new Date();
-            var current_day = d.getDay();
+            var d = new Date ();
+            var current_day = d.getDay ();
             var show_days = [];
             for (var i = 0; i < all_days.length; i++) {
-              show_days.push({
+              show_days.push ({
                 text: all_days[i],
                 value: all_days[i],
               });
             }
-            console.log(show_days, JSON.stringify(show_days), 'show days');
+            console.log (show_days, JSON.stringify (show_days), 'show days');
             let genericAttachments = [
               {
                 attachmentLinkUrl: null,
-                buttons: show_days,
+                buttons: config.daysArr,
                 imageUrl: null,
                 subTitle: '...',
                 title: 'Please choose a day.',
               },
             ];
-            return lexResponses.elicitSlot(
+            return lexResponses.elicitSlot (
               intentRequest.sessionAttributes,
               'DiscussIntent',
               {
@@ -744,26 +789,26 @@ module.exports = function (intentRequest) {
             'Thursday',
             'Friday',
           ];
-          var d = new Date();
-          var current_day = d.getDay();
+          var d = new Date ();
+          var current_day = d.getDay ();
           var show_days = [];
           for (var i = 0; i < all_days.length; i++) {
-            show_days.push({
+            show_days.push ({
               text: all_days[i],
               value: all_days[i],
             });
           }
-          console.log(show_days, JSON.stringify(show_days), 'show days');
+          console.log (show_days, JSON.stringify (show_days), 'show days');
           let genericAttachments = [
             {
               attachmentLinkUrl: null,
-              buttons: show_days,
+              buttons: config.daysArr,
               imageUrl: null,
               subTitle: '...',
               title: 'Please choose a day.',
             },
           ];
-          return lexResponses.elicitSlot(
+          return lexResponses.elicitSlot (
             intentRequest.sessionAttributes,
             'DiscussIntent',
             {
@@ -792,6 +837,26 @@ module.exports = function (intentRequest) {
       query_form.user_day != null &&
       query_form.user_time == null
     ) {
+      console.log ('ramram');
+      console.log (config.daysArr);
+      var u = config.aryDates.map (val => {
+        console.log (val, 'mustang');
+        var split = val.split (' ');
+        console.log (split, 'userday split');
+        console.log (query_form.user_day);
+        console.log (split[2]);
+        if (split[0] == query_form.user_day) {
+          console.log ('in the block ');
+          query_form.user_day =
+            split[0] +
+            ', ' +
+            dateSuffix (split[1]) +
+            ' ' +
+            split[2] +
+            ', ' +
+            split[3];
+        }
+      });
       // check for only having mon to fri in day slot
       if (
         intentRequest.inputTranscript == 'Monday' ||
@@ -829,7 +894,7 @@ module.exports = function (intentRequest) {
           title: '(Indian Standard Time, +5.5 GMT)',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -860,7 +925,7 @@ module.exports = function (intentRequest) {
       config.user_details = query_form;
       let message =
         'Please give us a brief description about your project. (You may copy and paste it here.)';
-      return lexResponses.elicitSlotWithoutCard(
+      return lexResponses.elicitSlotWithoutCard (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -935,35 +1000,43 @@ module.exports = function (intentRequest) {
         +' (IST, + 5.5 GMT)' +
         '\n User Type : ' +
         query_form.userr_type;
-      var status = common.sendInvite(
-        '<span>Hi ' + query_form.user_name + ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + query_form.user_day + ' between ' + query_form.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', query_form.user_email, 'Project Discussion Appointment with Prologic Technologies'
-      );
-      sendSlackMsg(slack_msg, myResult => {
-        // console.log ('Slack message sent : ' + myResult);
-        var status = common.sendEmail(
-          ' <pre> <span>Hi <b>' +
+      var status = common.sendInvite (
+        '<span>Hi ' +
           query_form.user_name +
-          '</b> has booked a Project Discussion session from ' +
-          platform +
-          '. His/Her details are given below:</span> <br>' +
-          ' E-mail Id : ' +
-          query_form.user_email +
-          '\<br> Contact number : ' +
-          query_form.user_phone +
-          '<br> Company Name : ' +
-          query_form.user_company +
-          '<br> User Type : ' +
-          query_form.userr_type +
-          '<br> Company Size : ' +
-          query_form.company_size +
-          '<br> Project Description : ' +
-          query_form.user_des +
-          '<br> Contact Day : ' +
+          ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' +
           query_form.user_day +
-          '<br> Contact Time : ' +
+          ' between ' +
           query_form.user_time +
-          ' (IST, + 5.5 GMT)' +
-          '</pre>',
+          ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ',
+        query_form.user_email,
+        'Project Discussion Appointment with Prologic Technologies'
+      );
+      sendSlackMsg (slack_msg, myResult => {
+        // console.log ('Slack message sent : ' + myResult);
+        var status = common.sendEmail (
+          ' <pre> <span>Hi <b>' +
+            query_form.user_name +
+            '</b> has booked a Project Discussion session from ' +
+            platform +
+            '. His/Her details are given below:</span> <br>' +
+            ' E-mail Id : ' +
+            query_form.user_email +
+            '\<br> Contact number : ' +
+            query_form.user_phone +
+            '<br> Company Name : ' +
+            query_form.user_company +
+            '<br> User Type : ' +
+            query_form.userr_type +
+            '<br> Company Size : ' +
+            query_form.company_size +
+            '<br> Project Description : ' +
+            query_form.user_des +
+            '<br> Contact Day : ' +
+            query_form.user_day +
+            '<br> Contact Time : ' +
+            query_form.user_time +
+            ' (IST, + 5.5 GMT)' +
+            '</pre>',
           'Iris Project Discussion Request From' + platform
         );
       });
@@ -986,7 +1059,7 @@ module.exports = function (intentRequest) {
           title: 'Anything else I can help you with? ',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -1010,7 +1083,7 @@ module.exports = function (intentRequest) {
       query_form.user_email != null &&
       query_form.user_phone != null &&
       query_form.user_des != null &&
-      query_form.is_complete.toUpperCase() == 'YES'
+      query_form.is_complete.toUpperCase () == 'YES'
       // config.current_step == 'discussIntent'
     ) {
       // console.log ('jj block');
@@ -1058,10 +1131,10 @@ module.exports = function (intentRequest) {
             title: 'Do you have a',
           },
         ];
-        return lexResponses.elicitSlot(
+        return lexResponses.elicitSlot (
           intentRequest.sessionAttributes,
           'Greeting',
-          { query: null },
+          {query: null},
           'query',
           'Okay, How can i help you?',
           genericAttachments
@@ -1086,7 +1159,7 @@ module.exports = function (intentRequest) {
           },
         ];
 
-        return lexResponses.elicitSlot(
+        return lexResponses.elicitSlot (
           intentRequest.sessionAttributes,
           'DiscussIntent',
           {
@@ -1103,10 +1176,10 @@ module.exports = function (intentRequest) {
           },
           'is_complete',
           '<div> Thank you for sharing your Project/Idea. We will call you between ' +
-          query_form.user_time +
-          ' (IST, + 5.5 GMT) on ' +
-          query_form.user_day +
-          '<br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a> <br/> </div>',
+            query_form.user_time +
+            ' (IST, + 5.5 GMT) on ' +
+            query_form.user_day +
+            '<br/><br/>For more queries you may send a mail to <a href="mailto:business@prologictechnologies.in" target="_top">business@prologictechnologies.in</a> <br/> </div>',
           genericAttachments
         );
       }
@@ -1115,7 +1188,7 @@ module.exports = function (intentRequest) {
       query_form.user_email != null &&
       query_form.user_phone != null &&
       query_form.user_des != null &&
-      query_form.is_complete.toUpperCase() == 'NO'
+      query_form.is_complete.toUpperCase () == 'NO'
       // (config.current_step == 'discussIntent' && query_form.is_complete == null)
     ) {
       config.is_send_discuss = false;
@@ -1130,7 +1203,7 @@ module.exports = function (intentRequest) {
         var msg =
           '<div>Thank You. Have a great day! &#x1F60A <br/>To start a new conversation say, Hi</div>';
       }
-      return lexResponses.close(
+      return lexResponses.close (
         intentRequest.sessionAttributes,
         'Fulfilled',
         msg
@@ -1178,7 +1251,7 @@ module.exports = function (intentRequest) {
           title: 'Anything else I can help you with? ',
         },
       ];
-      return lexResponses.elicitSlot(
+      return lexResponses.elicitSlot (
         intentRequest.sessionAttributes,
         'DiscussIntent',
         {
@@ -1203,8 +1276,8 @@ module.exports = function (intentRequest) {
   }
 };
 
-var https = require('https');
-function sendSlackMsg(postm, callback) {
+var https = require ('https');
+function sendSlackMsg (postm, callback) {
   var post_data = {
     text: postm,
   };
@@ -1215,20 +1288,84 @@ function sendSlackMsg(postm, callback) {
     method: 'POST',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(JSON.stringify(post_data)),
+      'Content-Length': Buffer.byteLength (JSON.stringify (post_data)),
     },
   };
 
-  var post_req = https.request(post_options, res => {
-    res.setEncoding('utf8');
+  var post_req = https.request (post_options, res => {
+    res.setEncoding ('utf8');
     var returnData = '';
-    res.on('data', chunk => {
+    res.on ('data', chunk => {
       returnData += chunk;
     });
-    res.on('end', () => {
-      callback('Success');
+    res.on ('end', () => {
+      callback ('Success');
     });
   });
-  post_req.write(JSON.stringify(post_data));
-  post_req.end();
+  post_req.write (JSON.stringify (post_data));
+  post_req.end ();
+}
+function GetDates (startDate, daysToAdd) {
+  config.aryDates = [];
+
+  for (var i = 1; i <= daysToAdd; i++) {
+    var currentDate = new Date ();
+    currentDate.setDate (startDate.getDate () + i);
+    config.aryDates.push (
+      DayAsString (currentDate.getDay ()) +
+        ' ' +
+        currentDate.getDate () +
+        ' ' +
+        MonthAsString (currentDate.getMonth ()) +
+        ' ' +
+        currentDate.getFullYear ()
+    );
+  }
+
+  return config.aryDates;
+}
+
+function MonthAsString (monthIndex) {
+  var d = new Date ();
+  var month = new Array ();
+  month[0] = 'January';
+  month[1] = 'February';
+  month[2] = 'March';
+  month[3] = 'April';
+  month[4] = 'May';
+  month[5] = 'June';
+  month[6] = 'July';
+  month[7] = 'August';
+  month[8] = 'September';
+  month[9] = 'October';
+  month[10] = 'November';
+  month[11] = 'December';
+
+  return month[monthIndex];
+}
+
+function DayAsString (dayIndex) {
+  var weekdays = new Array (7);
+  weekdays[0] = 'Sunday';
+  weekdays[1] = 'Monday';
+  weekdays[2] = 'Tuesday';
+  weekdays[3] = 'Wednesday';
+  weekdays[4] = 'Thursday';
+  weekdays[5] = 'Friday';
+  weekdays[6] = 'Saturday';
+
+  return weekdays[dayIndex];
+}
+function dateSuffix (i) {
+  var j = i % 10, k = i % 100;
+  if (j == 1 && k != 11) {
+    return i + 'st';
+  }
+  if (j == 2 && k != 12) {
+    return i + 'nd';
+  }
+  if (j == 3 && k != 13) {
+    return i + 'rd';
+  }
+  return i + 'th';
 }
