@@ -734,24 +734,6 @@ module.exports = function (intentRequest) {
               'Best day to contact you'
             );
           } else {
-            var all_days = [
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-            ];
-            // check for day value
-            var d = new Date ();
-            var current_day = d.getDay ();
-            var show_days = [];
-            for (var i = 0; i < all_days.length; i++) {
-              show_days.push ({
-                text: all_days[i],
-                value: all_days[i],
-              });
-            }
-            console.log (show_days, JSON.stringify (show_days), 'show days');
             let genericAttachments = [
               {
                 attachmentLinkUrl: null,
@@ -782,23 +764,6 @@ module.exports = function (intentRequest) {
             );
           }
         } else {
-          var all_days = [
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-          ];
-          var d = new Date ();
-          var current_day = d.getDay ();
-          var show_days = [];
-          for (var i = 0; i < all_days.length; i++) {
-            show_days.push ({
-              text: all_days[i],
-              value: all_days[i],
-            });
-          }
-          console.log (show_days, JSON.stringify (show_days), 'show days');
           let genericAttachments = [
             {
               attachmentLinkUrl: null,
@@ -837,16 +802,11 @@ module.exports = function (intentRequest) {
       query_form.user_day != null &&
       query_form.user_time == null
     ) {
-      console.log ('ramram');
-      console.log (config.daysArr);
+      // displaying day value in a particular fromat
       var u = config.aryDates.map (val => {
-        console.log (val, 'mustang');
         var split = val.split (' ');
-        console.log (split, 'userday split');
-        console.log (query_form.user_day);
-        console.log (split[2]);
+
         if (split[0] == query_form.user_day) {
-          console.log ('in the block ');
           query_form.user_day =
             split[0] +
             ', ' +

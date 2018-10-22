@@ -607,46 +607,6 @@ module.exports = function (intentRequest) {
       query_form.user_day == null &&
       query_form.user_time == null
     ) {
-      // var emailPattern = /^[a-zA-Z][a-zA-Z0-9_+]*(\.[a-zA-Z][a-zA-Z0-9_+]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
-      // if (intentRequest.requestAttributes != null) {
-      //   if (mail) {
-      //     if (
-      //       intentRequest.requestAttributes['x-amz-lex:channel-type'] == 'Slack'
-      //     ) {
-      //       var emailValidation = emailPattern.test (mail[0]);
-      //     }
-      //   } else if (
-      //     intentRequest.requestAttributes['x-amz-lex:channel-type'] ==
-      //     'Facebook'
-      //   ) {
-      //     var emailValidation = emailPattern.test (
-      //       intentRequest.inputTranscript
-      //     );
-      //   }
-      // } else {
-      //   var emailValidation = emailPattern.test (intentRequest.inputTranscript);
-      // }
-      // if (!emailValidation) {
-      //   let message = 'And your email address please?';
-      //   return lexResponses.elicitSlotWithoutCard (
-      //     intentRequest.sessionAttributes,
-      //     'ConsultIntent',
-      //     {
-      //       user_company: query_form.user_company,
-      //       user_des: null,
-      //       user_email: null,
-      //       user_name: query_form.user_name,
-      //       user_phone: query_form.user_phone,
-      //       user_size: query_form.user_size,
-      //       userr_type: query_form.userr_type,
-      //       user_day: null,
-
-      //       user_time: null,
-      //       is_complete: null,
-      //     },
-      //     'user_email',
-      //     message
-      //   );
       var phone_reg = /^\d{7,13}$/;
       var phone_val = phone_reg.test (query_form.user_phone);
       let message =
@@ -744,7 +704,7 @@ module.exports = function (intentRequest) {
         );
       } else {
         // code  for getting days and date
-        // code  for getting days and date
+
         var startDate = new Date ();
         config.aryDates = GetDates (startDate, 7);
         var splitArr;
@@ -795,27 +755,6 @@ module.exports = function (intentRequest) {
               'Best day to contact you'
             );
           } else {
-            // // code  for getting days and date
-            // var startDate = new Date ();
-            // var  config.aryDates  = GetDates (startDate, 7);
-            // console.log ( config.aryDates , 'daysarray');
-            var all_days = [
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-            ];
-            var d = new Date ();
-            var current_day = d.getDay ();
-            var show_days = [];
-            for (var i = 0; i < all_days.length; i++) {
-              show_days.push ({
-                text: all_days[i],
-                value: all_days[i],
-              });
-            }
-            // console.log (show_days, JSON.stringify (show_days), 'show days');
             let genericAttachments = [
               {
                 attachmentLinkUrl: null,
@@ -847,24 +786,6 @@ module.exports = function (intentRequest) {
             );
           }
         } else {
-          console.log (config.aryDates, 'daysarray');
-          var all_days = [
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-          ];
-          var d = new Date ();
-          var current_day = d.getDay ();
-          var show_days = [];
-          for (var i = 0; i < all_days.length; i++) {
-            show_days.push ({
-              text: all_days[i],
-              value: all_days[i],
-            });
-          }
-          // console.log (show_days, JSON.stringify (show_days), 'show days');
           let genericAttachments = [
             {
               attachmentLinkUrl: null,
@@ -904,16 +825,11 @@ module.exports = function (intentRequest) {
       query_form.user_day != null &&
       query_form.user_time == null
     ) {
-      console.log ('ramram');
-      console.log (config.daysArr);
+      // displaying days in particular format
       var u = config.aryDates.map (val => {
-        console.log (val, 'mustang');
         var split = val.split (' ');
-        console.log (split, 'userday split');
-        console.log (query_form.user_day);
-        console.log (split[2]);
+
         if (split[0] == query_form.user_day) {
-          console.log ('in the block ');
           query_form.user_day =
             split[0] +
             ', ' +
