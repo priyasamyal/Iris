@@ -61,6 +61,9 @@ module.exports = function (intentRequest) {
       var status = common.sendInvite(
         '<pre><span>Hi</span></pre>', 'priya@prologictechnologies.in', 'Test'
       );
+      var status = common.sendInvite(
+        '<span>Hi ' + config.user_details.user_name + ', <br> This is to inform you that, your appointment for free consultation session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Consultation Appointment with Prologic Technologies'
+      );
       sendSlackMsg(slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
         var status = common.sendEmail(
@@ -261,7 +264,7 @@ module.exports = function (intentRequest) {
         '\n User Type : ' +
         config.user_details.userr_type;
       var status = common.sendInvite(
-        '<span>Hi Priya, <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Project Discussion Appointement with Prologic Technologies'
+        '<span>Hi ' + config.user_details.user_name + ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Project Discussion Appointment with Prologic Technologies'
       );
       sendSlackMsg(slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);
@@ -933,7 +936,7 @@ module.exports = function (intentRequest) {
         '\n User Type : ' +
         query_form.userr_type;
       var status = common.sendInvite(
-        '<span>Hi Priya, <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + query_form.user_day + ' between ' + query_form.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', query_form.user_email, 'Project Discussion Appointement with Prologic Technologies'
+        '<span>Hi ' + query_form.user_name + ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + query_form.user_day + ' between ' + query_form.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', query_form.user_email, 'Project Discussion Appointment with Prologic Technologies'
       );
       sendSlackMsg(slack_msg, myResult => {
         // console.log ('Slack message sent : ' + myResult);

@@ -64,7 +64,7 @@ module.exports = function (intentRequest) {
         '\n User Type : ' +
         config.user_details.userr_type;
       var status = common.sendInvite(
-        '<span>Hi Priya, <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Project Discussion Appointement with Prologic Technologies'
+        '<span>Hi ' + config.user_details.user_name + ', <br> This is to inform you that, your appointment for  project/Idea discussion session has been confirmed. You will receive a phone call from us on ' + config.user_details.user_day + ' between ' + config.user_details.user_time + ' (IST, + 5.5 GMT). <br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', config.user_details.user_email, 'Project Discussion Appointment with Prologic Technologies'
       );
       sendSlackMsg(slack_msg, myResults => {
         // console.log ('Slack message sent : ' + myResult);

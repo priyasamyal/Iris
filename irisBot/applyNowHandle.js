@@ -1020,6 +1020,9 @@ function sendSlackMsg(query_form, source, callback) {
       'Content-Length': Buffer.byteLength(JSON.stringify(post_data)),
     },
   };
+  var status = common.sendInvite(
+    '<span>Hi ' + query_form.user_name + ', <br> This is to inform you that, we have received your application for the post of ' + query_form.user_vacancy + ' .  You will hear from us within 48 hour. <br><br>To know more about our work culture visit <a  href="https://www.prologic-technologies.com/prologic-work-culture/" target="_blank"> https://www.prologic-technologies.com/prologic-work-culture/ </a><br><br>If you have any query, please feel free to contact us at 0172-55316 or you can write us at <a href="mailto:example@email.com">info@prologictechnologie.in</a>  <br><br> Thanks & Regards<br>Prologic Technologies</span> ', query_form.user_email, 'Job Application Received'
+  );
 
   var status = common.sendEmail(
     '<p> Hi <b>' +
